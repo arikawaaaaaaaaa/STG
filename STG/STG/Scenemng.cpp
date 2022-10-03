@@ -1,4 +1,4 @@
-#include"Scenemng.h"
+﻿#include"Scenemng.h"
 #include"DxLib.h"
 
 AbstractScene* SceneManager::Update() {

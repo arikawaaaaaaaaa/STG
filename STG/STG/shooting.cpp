@@ -1,41 +1,42 @@
-/********************************************************************
-**	‘æ‚SÍ@ƒQ[ƒ€ƒvƒƒOƒ‰ƒ~ƒ“ƒO‚ÌŠî–{
-**	@ƒuƒƒbƒN•ö‚µƒQ[ƒ€‚Ìì¬(2018)
+ï»¿/********************************************************************
+**	ç¬¬ï¼”ç« ã€€ã‚²ãƒ¼ãƒ ãƒ—ãƒ­ã‚°ãƒ©ãƒŸãƒ³ã‚°ã®åŸºæœ¬
+**	ã€€ãƒ–ãƒ­ãƒƒã‚¯å´©ã—ã‚²ãƒ¼ãƒ ã®ä½œæˆ(2018)
 ********************************************************************/
 #include "DxLib.h"
 #include "Scenemng.h"
+#include "main.h"
 
 /***********************************************
- * ƒvƒƒOƒ‰ƒ€‚ÌŠJn
+ * ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã®é–‹å§‹
  ***********************************************/
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     LPSTR lpCmdLine, int nCmdShow) {
 
-    // ƒ^ƒCƒgƒ‹‚ğ test ‚É•ÏX
-    SetMainWindowText("ƒVƒ…[ƒeƒBƒ“ƒO");
+    // ã‚¿ã‚¤ãƒˆãƒ«ã‚’ test ã«å¤‰æ›´
+    SetMainWindowText("ã‚·ãƒ¥ãƒ¼ãƒ†ã‚£ãƒ³ã‚°");
 
-    ChangeWindowMode(TRUE);		// ƒEƒBƒ“ƒhƒEƒ‚[ƒh‚Å‹N“®
+    ChangeWindowMode(TRUE);		// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒ¢ãƒ¼ãƒ‰ã§èµ·å‹•
 
-    if (DxLib_Init() == -1) return -1;	// DXƒ‰ƒCƒuƒ‰ƒŠ‚Ì‰Šú‰»ˆ—
+    if (DxLib_Init() == -1) return -1;	// DXãƒ©ã‚¤ãƒ–ãƒ©ãƒªã®åˆæœŸåŒ–å‡¦ç†
 
-    SetDrawScreen(DX_SCREEN_BACK);	// •`‰ææ‰æ–Ê‚ğ— ‚É‚·‚é
+    SetDrawScreen(DX_SCREEN_BACK);	// æç”»å…ˆç”»é¢ã‚’è£ã«ã™ã‚‹
 
-    SetFontSize(20);		// •¶šƒTƒCƒY‚ğİ’è
+    SetFontSize(20);		// æ–‡å­—ã‚µã‚¤ã‚ºã‚’è¨­å®š
 
-    SceneManager sceneMng(new main);
+    SceneManager sceneMng(new GameMain);
 
-    // ƒQ[ƒ€ƒ‹[ƒv
+    // ã‚²ãƒ¼ãƒ ãƒ«ãƒ¼ãƒ—
     while (ProcessMessage() == 0 && sceneMng.Update() != nullptr) {
 
-        ClearDrawScreen();		// ‰æ–Ê‚Ì‰Šú‰»
+        ClearDrawScreen();		// ç”»é¢ã®åˆæœŸåŒ–
 
         sceneMng.Draw();
 
-        ScreenFlip();			// — ‰æ–Ê‚Ì“à—e‚ğ•\‰æ–Ê‚É”½‰f
+        ScreenFlip();			// è£ç”»é¢ã®å†…å®¹ã‚’è¡¨ç”»é¢ã«åæ˜ 
 
     }
 
-    DxLib_End();	// DXƒ‰ƒCƒuƒ‰ƒŠg—p‚ÌI—¹ˆ—
+    DxLib_End();	// DXãƒ©ã‚¤ãƒ–ãƒ©ãƒªä½¿ç”¨ã®çµ‚äº†å‡¦ç†
 
-    return 0;	// ƒ\ƒtƒg‚ÌI—¹
+    return 0;	// ã‚½ãƒ•ãƒˆã®çµ‚äº†
 }
