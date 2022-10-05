@@ -151,13 +151,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Charabase.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="player.cpp" />
     <ClCompile Include="Scenemng.cpp" />
     <ClCompile Include="shooting.cpp" />
+    <ClCompile Include="SphereColider.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Charabase.h" />
     <ClInclude Include="main.h" />
+    <ClInclude Include="player.h" />
     <ClInclude Include="Scenemng.h" />
+    <ClInclude Include="SphereColider.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
