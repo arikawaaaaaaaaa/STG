@@ -11,6 +11,9 @@ private:
 	float radius;
 
 public:
+	SphereColider(Location loc, float rad);
+
+public: 
 	bool HitSphere(SphereColider hit);
 	Location GetLocation();
 	void SetLocation(Location loc);

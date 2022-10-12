@@ -1,6 +1,7 @@
 #pragma once
+#include"SphereColider.h"
 
-class CharaBase {
+class CharaBase : public SphereColider{
 private:
 	int bullets[500];
 	float speed;
