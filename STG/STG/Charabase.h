@@ -1,20 +1,24 @@
 #pragma once
 #include"SphereColider.h"
 
-class CharaBase : public SphereColider{
-private:
-	int bullets[500];
-	float speed;
-	int image[6];
+class CharaBase{
+protected:
+	Location speed;
+
+	//int* bullets;
+	int* image = nullptr;
 
 public:
 
-	virtual ~CharaBase() {};
-	virtual CharaBase* Update();
-	virtual void Draw() const;
-	virtual int Hit();
+	virtual ~CharaBase();
+
+	virtual void Update() = 0;
+	virtual void Draw() = 0;
+	virtual void Hit() = 0;
+
+	Location GetSpeed();
+	void SetSpeed(Location speed);
 	
-	int GetBullets();
-	void SetSpeed(float spd);
-	void SetImage(int img);
+	//int GetBullets();
+	//void SetImage(int img);
 };

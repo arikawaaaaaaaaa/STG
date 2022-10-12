@@ -17,4 +17,5 @@ public:
 	bool HitSphere(SphereColider hit);
 	Location GetLocation();
 	void SetLocation(Location loc);
+	float GetRadius();
 };

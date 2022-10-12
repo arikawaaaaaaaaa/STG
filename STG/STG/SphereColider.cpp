@@ -39,3 +39,5 @@ void SphereColider::SetLocation(Location loc) {
 	location.X = loc.X;
 	location.Y = loc.Y;
 }
+
+float SphereColider::GetRadius() { return radius; }

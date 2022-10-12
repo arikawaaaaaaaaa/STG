@@ -1,28 +1,25 @@
 #pragma once
 
-#include"DxLib.h"
+//#include"DxLib.h"
 #include"Charabase.h"
 
-class Player : public CharaBase
-{
-public:
-	Player();
-	~Player();
-	void Draw();
-
-	void Draw() const override;
-	CharaBase* Update() override;
-	int Hit() override;
-
-	int LifeCheck();
-	int GetScore();
+class Player : public CharaBase, public SphereColider{
 
 private:
 
-	float X;
-	float Y;
-
 	int Life;
 	int Score;
+
+
+public:
+	Player(Location loc, float rad);
+	//~Player();
+
+	void Update() override;
+	void Draw() override;
+	void Hit() override;
+
+	bool LifeCheck();
+	int GetScore();
 
 };
