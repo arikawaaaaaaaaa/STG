@@ -1,4 +1,4 @@
 #include "KeyMng.h"
 
-int KeyMng::OldKey;	//前フレーム入力
-int KeyMng::NowKey;	//今フレーム入力
+char KeyMng::OldKey[256];	//前フレーム入力
+char KeyMng::NowKey[256];	//今フレーム入力
