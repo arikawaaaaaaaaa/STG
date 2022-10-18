@@ -12,7 +12,7 @@ public:
 		location.X = 10;
 		location.Y = 100;
 
-		float rad = 10.f;
+		float rad = 5.f;
 		player = new Player(location, rad);
 	}
 

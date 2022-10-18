@@ -1,9 +1,11 @@
 #pragma once
 #include"SphereColider.h"
+#include"BulletsBase.h"
 
 class CharaBase{
 protected:
-	Location speed;
+	Location speed;			//‘¬“x
+	BulletsBase** bullets;	//’e
 
 	//int* bullets;
 	int* image = nullptr;
@@ -19,6 +21,6 @@ public:
 	Location GetSpeed();
 	void SetSpeed(Location speed);
 	
-	//int GetBullets();
+	BulletsBase** GetBullets();
 	//void SetImage(int img);
 };

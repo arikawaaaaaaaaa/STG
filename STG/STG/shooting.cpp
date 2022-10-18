@@ -5,7 +5,6 @@
 #include "DxLib.h"
 #include "Scenemng.h"
 #include "main.h"
-#include"KeyMng.h"
 
 /***********************************************
  * プログラムの開始
@@ -17,6 +16,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     SetMainWindowText("シューティング");
 
     ChangeWindowMode(TRUE);		// ウィンドウモードで起動
+    SetGraphMode(1280, 720, 16);
 
     if (DxLib_Init() == -1) return -1;	// DXライブラリの初期化処理
 
@@ -30,45 +30,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     while (ProcessMessage() == 0 && sceneMng.Update() != nullptr) {
 
         ClearDrawScreen();		// 画面の初期化
-
-        if (KeyMng::OnPress(KEY_INPUT_RIGHT)) {
-            DrawString(100, 100, "aaa", 0xffffff);
-        }
-        if (KeyMng::OnPress(KEY_INPUT_LEFT)) {
-            DrawString(100, 200, "aaa", 0xffffff);
-        }
-        if (KeyMng::OnPress(KEY_INPUT_UP)) {
-            DrawString(100, 300, "aaa", 0xffffff);
-        }
-        if (KeyMng::OnPress(KEY_INPUT_DOWN)) {
-            DrawString(100, 400, "aaa", 0xffffff);
-        }
-
-        if (KeyMng::OnClick(KEY_INPUT_RIGHT)) {
-            DrawString(200, 100, "aaa", 0xffffff);
-        }
-        if (KeyMng::OnClick(KEY_INPUT_LEFT)) {
-            DrawString(200, 200, "aaa", 0xffffff);
-        }
-        if (KeyMng::OnClick(KEY_INPUT_UP)) {
-            DrawString(200, 300, "aaa", 0xffffff);
-        }
-        if (KeyMng::OnClick(KEY_INPUT_DOWN)) {
-            DrawString(200, 400, "aaa", 0xffffff);
-        }
-
-        if (KeyMng::OnRelease(KEY_INPUT_RIGHT)) {
-            DrawString(300, 100, "aaa", 0xffffff);
-        }
-        if (KeyMng::OnRelease(KEY_INPUT_LEFT)) {
-            DrawString(300, 200, "aaa", 0xffffff);
-        }
-        if (KeyMng::OnRelease(KEY_INPUT_UP)) {
-            DrawString(300, 300, "aaa", 0xffffff);
-        }
-        if (KeyMng::OnRelease(KEY_INPUT_DOWN)) {
-            DrawString(300, 400, "aaa", 0xffffff);
-        }
 
         sceneMng.Draw();
 
