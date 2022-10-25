@@ -25,17 +25,27 @@ void Player::Update() {
 
 	int bulletcount;
 	for (bulletcount = 0; bulletcount < 30; bulletcount++) {
+
 		if (bullets[bulletcount] == nullptr) { break; }
+		
 		bullets[bulletcount]->Update();
+
+		if (bullets[bulletcount]->isDeath()) {
+			delete bullets[bulletcount];
+
+			for (int i = bulletcount; i < 30 ; i++) {
+				if (bullets[i + 1] == nullptr)break;
+
+				if (bullets[i] == nullptr) bullets[i] = bullets[i + 1];
+			}
+		}
 	}
 
-	if (KeyMng::OnClick(KEY_INPUT_Z)) {
-		int i;
+	if (KeyMng::OnClick(KEY_INPUT_Z)) {	//’e‚ð”­ŽË‚·‚é
 		int cap = 30;
-		for (i = 0; i < cap; i++) {
-			if (bullets[i] == nullptr) { break; }
+		if (bullets[bulletcount] == nullptr && bulletcount < 30) {	//‰æ–Êã‚Ì’e‚Ì”‚ÍÅ‘å’l–¢–žH
+			bullets[bulletcount] = new straightBlt(GetLocation());	//^‚È‚ç’e‚ð”­ŽË‚·‚é
 		}
-		if (i < cap) bullets[i] = new straightBlt(GetLocation());
 	}
 }
 
