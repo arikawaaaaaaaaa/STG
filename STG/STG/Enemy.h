@@ -3,26 +3,20 @@
 #include"DxLib.h"
 #include"Charabase.h"
 
-class Enemy : public CharaBase
+class Enemy : public CharaBase, public SphereColider
 {
-public:
-	Enemy();
-	~Enemy();
-	void Draw();
-
-	void Draw() const override;
-	CharaBase* Update() override;
-	int Hit() override;
-
-	int LifeCheck();
-	int GetPoint();
-
 private:
+	int hp;
+	int point;
 
-	float X;
-	float Y;
+public:
+	Enemy(Location loc, float rad);
 
-	int Life;
-	int Score;
+public:
+	virtual void Update() override;
+	virtual void Draw() override;
+	virtual void Hit() override;
+	bool Checkhp();
+	int Getpoint();
 
 };

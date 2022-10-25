@@ -30,14 +30,19 @@ void Player::Update() {
 		
 		bullets[bulletcount]->Update();
 
-		if (bullets[bulletcount]->isDeath()) {
-			delete bullets[bulletcount];
+		if (bullets[bulletcount]->isDeath()) {	//弾が画面外に出た？
+			
+			delete bullets[bulletcount];		//出た弾を消す
+			bullets[bulletcount] = nullptr;
 
-			for (int i = bulletcount; i < 30 ; i++) {
-				if (bullets[i + 1] == nullptr)break;
+			for (int i = bulletcount + 1; i < 30; i++) {	//弾の配列にできた空白を埋める
 
-				if (bullets[i] == nullptr) bullets[i] = bullets[i + 1];
+				if (bullets[i] == nullptr) { break; }
+
+				bullets[i - 1] = bullets[i];
+				bullets[i] = nullptr;
 			}
+			bulletcount--;
 		}
 	}
 

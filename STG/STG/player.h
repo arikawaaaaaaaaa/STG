@@ -20,5 +20,6 @@ public:
 
 	bool LifeCheck();
 	int GetScore();
+	void AddScore(int add) { Score += add; }
 
 };

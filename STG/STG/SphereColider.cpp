@@ -8,10 +8,10 @@ SphereColider::SphereColider(Location loc, float rad) {
 	this->radius = rad;
 }
 
-bool SphereColider::HitSphere(SphereColider hit) {
+bool SphereColider::HitSphere(SphereColider* hit) {
 
 	//X,YŠÔ‚Ì‹——£‚ğæ‚é
-	Location location = hit.GetLocation();
+	Location location = hit->GetLocation();
 	float x = location.X - this->location.X;
 	float y = location.Y - this->location.Y;
 
@@ -24,7 +24,7 @@ bool SphereColider::HitSphere(SphereColider hit) {
 	double vecSize = sqrt(xy);
 
 	//©•ª‚Æ‘Šè‚Ì”¼Œa‚Ì˜a‚Æ”ä‚×‚é
-	float rad = this->radius + hit.radius;
+	float rad = this->radius + hit->radius;
 
 	//rad‚æ‚è¬‚³‚¢?
 	bool ret = (vecSize <= rad);
