@@ -17,9 +17,10 @@ public:
 	void Update() override;
 	void Draw() override;
 	void Hit() override;
+	void Hit(int BulletCnt);
 
 	bool LifeCheck();
 	int GetScore();
-	void AddScore(int add) { Score += add; }
+	void AddScore(int add) { if (add > 0) Score += add; }
 
 };

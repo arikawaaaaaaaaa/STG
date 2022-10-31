@@ -26,10 +26,19 @@ void Enemy::Draw() {
 	DrawCircle((int)GetLocation().X, (int)GetLocation().Y, (int)GetRadius(), 0x00ff00);
 }
 
+void Enemy::Hit(int damage) {
+
+	if (damage >= 0) {
+		hp -= damage;
+		if (hp < 0) hp = 0;
+	}
+
+}
+
 void Enemy::Hit() {}
 
 bool Enemy::Checkhp() { 
-	bool let = (hp < 0);
+	bool let = (hp <= 0);
 	return let;
 }
 

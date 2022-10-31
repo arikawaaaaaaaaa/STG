@@ -8,11 +8,15 @@ private:
 	Player* player;
 	Enemy** enemy;
 
+	int time;
+
 public:
 	GameMain() {
 		Location location;
 		location.X = 10;
 		location.Y = 100;
+
+		time = 0;
 
 		float rad = 5.f;
 		player = new Player(location, rad);
@@ -20,7 +24,7 @@ public:
 		for (int i = 0; i < 10; i++) {
 			enemy[i] = nullptr;
 		}
-		enemy[0] = new Enemy(Location{ 300,0 }, 20);
+		enemy[0] = new Enemy(Location{ (float)GetRand(1280),0 }, 20);
 	}
 
 	virtual ~GameMain() {

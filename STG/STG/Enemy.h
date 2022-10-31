@@ -16,6 +16,7 @@ public:
 	virtual void Update() override;
 	virtual void Draw() override;
 	virtual void Hit() override;
+	virtual void Hit(int damage);
 	bool Checkhp();
 	int Getpoint();
 

@@ -4,6 +4,9 @@
 
 
 AbstractScene* GameMain::Update() {
+
+
+
     player->Update();
     for (int i = 0; i < 10; i++) {
         if (enemy[i] == nullptr)break;
@@ -20,11 +23,32 @@ AbstractScene* GameMain::Update() {
 
             if (bullets[bulletcnt]->HitSphere(enemy[enecnt])) {
                 //弾が命中
-                player->AddScore(10);
+                enemy[enecnt]->Hit(bullets[bulletcnt]->GetDamage());
+
+                player->Hit(bulletcnt); //弾を消す
+                bullets = player->GetBullets();
+                bulletcnt--;
+
+                if (enemy[enecnt]->Checkhp()) {
+                    player->AddScore(enemy[enecnt]->Getpoint());
+
+                    delete enemy[enecnt];		//出た弾を消す
+                    enemy[enecnt] = nullptr;
+
+                    for (int i = enecnt + 1; i < 10; i++) {	//弾の配列にできた空白を埋める
+
+                        if (enemy[i] == nullptr) { break; }
+
+                        enemy[i - 1] = enemy[i];
+                        enemy[i] = nullptr;
+                    }
+                    enecnt--;
+                }
             }
         }
     }
 
+    time++;
     return this;
 }
 

@@ -65,6 +65,19 @@ void Player::Draw() {
 
 void Player::Hit() {}
 
+void Player::Hit(int BulletCnt) {
+	delete bullets[BulletCnt];
+	bullets[BulletCnt] = nullptr;
+
+	for (int i = BulletCnt + 1; i < 30; i++) {	//’e‚Ì”z—ñ‚É‚Å‚«‚½‹ó”’‚ð–„‚ß‚é
+
+		if (bullets[i] == nullptr) { break; }
+
+		bullets[i - 1] = bullets[i];
+		bullets[i] = nullptr;
+	}
+}
+
 bool Player::LifeCheck() {
 	bool ret = (Life <= 0);
 	return ret;
