@@ -5,8 +5,6 @@
 
 AbstractScene* GameMain::Update() {
 
-
-
     player->Update();
     for (int i = 0; i < 10; i++) {
         if (enemy[i] == nullptr)break;
