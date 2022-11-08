@@ -2,11 +2,13 @@
 #include"Scenemng.h"
 #include"player.h"
 #include"Enemy.h"
+#include"ItemBase.h"
 
 class GameMain :public AbstractScene {
 private:
 	Player* player;
 	Enemy** enemy;
+	ItemBase** items;
 
 	int time;
 
@@ -20,11 +22,17 @@ public:
 
 		float rad = 5.f;
 		player = new Player(location, rad);
+
 		enemy = new Enemy*[10];
 		for (int i = 0; i < 10; i++) {
 			enemy[i] = nullptr;
 		}
 		enemy[0] = new Enemy(Location{ (float)GetRand(1280),0 }, 20);
+
+		items = new ItemBase * [10];
+		for (int i = 0; i < 10; i++) {
+			items[i] = nullptr;
+		}
 	}
 
 	virtual ~GameMain() {

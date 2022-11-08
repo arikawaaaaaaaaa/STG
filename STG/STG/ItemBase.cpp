@@ -8,4 +8,4 @@ ItemBase::ItemBase(Location location, float rad, E_ITEMTYPE type, Location spd)
 
 void ItemBase::Update() {}
 void ItemBase::Draw() {}
-E_ITEMTYPE GetType() {}
+//E_ITEMTYPE GetType() {}
