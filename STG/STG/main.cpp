@@ -40,6 +40,7 @@ AbstractScene* GameMain::Update() {
                     for (int i = 0; i < 10; i++) {
                         if (items[i] == nullptr) {
                             items[i] = new HPotion(enemy[enecnt]->GetLocation());
+                            break;
                         }
                     }
 
@@ -65,6 +66,9 @@ AbstractScene* GameMain::Update() {
         if (items[itemcnt] == nullptr)break;
 
         if (player->HitSphere(items[itemcnt])) {
+
+            player->Hit(items[itemcnt]);
+
             delete items[itemcnt];		//アイテムを消す
             items[itemcnt] = nullptr;
 

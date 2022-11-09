@@ -2,6 +2,7 @@
 
 //#include"DxLib.h"
 #include"Charabase.h"
+#include"ItemBase.h"
 
 class Player : public CharaBase, public SphereColider{
 
@@ -17,10 +18,13 @@ public:
 	void Update() override;
 	void Draw() override;
 	void Hit() override;
+
 	void Hit(int BulletCnt);
+	void Hit(class ItemBase* item);
 
 	bool LifeCheck();
 	int GetScore();
 	void AddScore(int add) { if (add > 0) Score += add; }
+
 
 };

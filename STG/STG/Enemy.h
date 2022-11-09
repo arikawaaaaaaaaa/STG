@@ -9,6 +9,8 @@ private:
 	int hp;
 	int point;
 
+	int Time;
+
 public:
 	Enemy(Location loc, float rad);
 

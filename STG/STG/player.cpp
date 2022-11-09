@@ -2,6 +2,9 @@
 #include"dxlib.h"
 #include"KeyMng.h"
 #include"straightBlt.h"
+#include"HPotion.h"
+
+#define DEBUG
 
 Location GetNewLocation(Location NewLoc);
 
@@ -47,11 +50,11 @@ void Player::Update() {
 	}
 
 	if (KeyMng::OnClick(KEY_INPUT_Z)) {	//’e‚ð”­ŽË‚·‚é
-		int cap = 30;
 		if (bullets[bulletcount] == nullptr && bulletcount < 30) {	//‰æ–Êã‚Ì’e‚Ì”‚ÍÅ‘å’l–¢–žH
-			bullets[bulletcount] = new straightBlt(GetLocation());	//^‚È‚ç’e‚ð”­ŽË‚·‚é
+			bullets[bulletcount] = new straightBlt(GetLocation(), 5, 0.f);	//^‚È‚ç’e‚ð”­ŽË‚·‚é
 		}
 	}
+
 }
 
 void Player::Draw() {
@@ -61,6 +64,13 @@ void Player::Draw() {
 		if (bullets[i] == nullptr) { break; }
 		bullets[i]->Draw();
 	}
+
+#ifdef DEBUG
+
+	DrawFormatString(10, 10, 0xffffff, "Life : %d", this->Life);
+#endif // DEBUG
+
+
 }
 
 void Player::Hit() {}
@@ -75,6 +85,25 @@ void Player::Hit(int BulletCnt) {
 
 		bullets[i - 1] = bullets[i];
 		bullets[i] = nullptr;
+	}
+}
+
+void Player::Hit(class ItemBase* item) {
+	
+	E_ITEMTYPE type = item->GetType();
+
+	switch (type)
+	{
+	case E_ITEMTYPE::HPotion:
+	{HPotion* potion = dynamic_cast<HPotion*>(item);
+	if (potion == nullptr)throw - 1;
+
+	this->Life += potion->GetHealP();
+
+	break;
+	}
+	default:
+		break;
 	}
 }
 

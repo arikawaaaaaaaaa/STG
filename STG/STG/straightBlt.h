@@ -1,12 +1,15 @@
 #pragma once
 #include "BulletsBase.h"
+
+constexpr auto PI = 3.1415926f;
+
 class straightBlt : public BulletsBase
 {
 private:
 	int image;
 
 public:
-	straightBlt(Location loc);	//コンストラクタ
+	straightBlt(Location loc, int spd, float ang);	//コンストラクタ
 
 public:
 	virtual void Update() override;

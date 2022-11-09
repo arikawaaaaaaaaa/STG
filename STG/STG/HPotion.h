@@ -13,5 +13,7 @@ public:
 
     virtual void Update();
     virtual void Draw();
+
+    int GetHealP() { return HealP; }
 };
 
