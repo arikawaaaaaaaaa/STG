@@ -3,6 +3,8 @@
 #include "straightBlt.h"
 #include "KeyMng.h"
 
+#define BltLimit 100
+
 Enemy::Enemy (Location loc, float rad) : SphereColider(loc, rad) {
 	point = 10;
 	hp = 10;
@@ -12,10 +14,10 @@ Enemy::Enemy (Location loc, float rad) : SphereColider(loc, rad) {
 	//point‰Šú‰»
 	//hp‰Šú‰»
 
-	speed = Location{ 0,0.5 };
+	speed = Location{ 0,0.3 };
 
-	bullets = new BulletsBase* [30];
-	for (int i = 0; i < 30; i++) {
+	bullets = new BulletsBase* [BltLimit];
+	for (int i = 0; i < BltLimit; i++) {
 		bullets[i] = nullptr;
 	}
 }
@@ -28,7 +30,7 @@ void Enemy::Update() {
 	Time++;
 
 	int bulletcount;
-	for (bulletcount = 0; bulletcount < 30; bulletcount++) {
+	for (bulletcount = 0; bulletcount < BltLimit; bulletcount++) {
 
 		if (bullets[bulletcount] == nullptr) break; 
 
@@ -39,7 +41,7 @@ void Enemy::Update() {
 			delete bullets[bulletcount];		//o‚½’e‚ğÁ‚·
 			bullets[bulletcount] = nullptr;
 
-			for (int i = bulletcount + 1; i < 30; i++) {	//’e‚Ì”z—ñ‚É‚Å‚«‚½‹ó”’‚ğ–„‚ß‚é
+			for (int i = bulletcount + 1; i < BltLimit; i++) {	//’e‚Ì”z—ñ‚É‚Å‚«‚½‹ó”’‚ğ–„‚ß‚é
 
 				if (bullets[i] == nullptr) { break; }
 
@@ -50,16 +52,16 @@ void Enemy::Update() {
 		}
 	}
 
-	if (bullets[bulletcount] == nullptr && bulletcount < 30 && Time % 5 == 0) {	//‰æ–Êã‚Ì’e‚Ì”‚ÍÅ‘å’l–¢–H
+	if (bullets[bulletcount] == nullptr && bulletcount < BltLimit && Time % 4 == 0) {	//‰æ–Êã‚Ì’e‚Ì”‚ÍÅ‘å’l–¢–H
 		bullets[bulletcount] = new straightBlt(GetLocation(), 5, 180);	//^‚È‚ç’e‚ğ”­Ë‚·‚é
-			Time = 0;
-		}
+		Time = 0;
+	}
 }
 
 void Enemy::Draw() {
 	DrawCircle((int)GetLocation().X, (int)GetLocation().Y, (int)GetRadius(), 0x00ff00);
 
-	for (int i = 0; i < 30; i++) {
+	for (int i = 0; i < BltLimit; i++) {
 		if (bullets[i] == nullptr) { break; }
 		bullets[i]->Draw();
 	}
