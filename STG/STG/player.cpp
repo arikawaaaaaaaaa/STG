@@ -3,6 +3,7 @@
 #include"KeyMng.h"
 #include"straightBlt.h"
 #include"HPotion.h"
+#include"common.h"
 
 #define DEBUG
 
@@ -15,8 +16,8 @@ Player::Player(Location loc, float rad) :SphereColider(loc, rad) {
 	//imageèâä˙âª
 	//speedèâä˙âª
 
-	bullets = new BulletsBase*[30];
-	for (int i = 0; i < 30; i++) {
+	bullets = new BulletsBase*[BltLimit];
+	for (int i = 0; i < BltLimit; i++) {
 		bullets[i] = nullptr;
 	}
 }
@@ -27,7 +28,7 @@ void Player::Update() {
 	SetLocation(NewLoc);
 
 	int bulletcount;
-	for (bulletcount = 0; bulletcount < 30; bulletcount++) {
+	for (bulletcount = 0; bulletcount < BltLimit; bulletcount++) {
 
 		if (bullets[bulletcount] == nullptr) { break; }
 		
@@ -38,7 +39,7 @@ void Player::Update() {
 			delete bullets[bulletcount];		//èoÇΩíeÇè¡Ç∑
 			bullets[bulletcount] = nullptr;
 
-			for (int i = bulletcount + 1; i < 30; i++) {	//íeÇÃîzóÒÇ…Ç≈Ç´ÇΩãÛîíÇñÑÇﬂÇÈ
+			for (int i = bulletcount + 1; i < BltLimit; i++) {	//íeÇÃîzóÒÇ…Ç≈Ç´ÇΩãÛîíÇñÑÇﬂÇÈ
 
 				if (bullets[i] == nullptr) { break; }
 
@@ -50,7 +51,7 @@ void Player::Update() {
 	}
 
 	if (KeyMng::OnClick(KEY_INPUT_Z)) {	//íeÇî≠éÀÇ∑ÇÈ
-		if (bullets[bulletcount] == nullptr && bulletcount < 30) {	//âÊñ è„ÇÃíeÇÃêîÇÕç≈ëÂílñ¢ñûÅH
+		if (bullets[bulletcount] == nullptr && bulletcount < BltLimit) {	//âÊñ è„ÇÃíeÇÃêîÇÕç≈ëÂílñ¢ñûÅH
 			bullets[bulletcount] = new straightBlt(GetLocation(), 5, 0.f);	//ê^Ç»ÇÁíeÇî≠éÀÇ∑ÇÈ
 		}
 	}
@@ -60,7 +61,7 @@ void Player::Update() {
 void Player::Draw() {
 	DrawCircle((int)GetLocation().X, (int)GetLocation().Y, (int)GetRadius(), 0xff0000);
 
-	for (int i = 0; i < 30; i++) {
+	for (int i = 0; i < BltLimit; i++) {
 		if (bullets[i] == nullptr) { break; }
 		bullets[i]->Draw();
 	}
@@ -73,13 +74,15 @@ void Player::Draw() {
 
 }
 
-void Player::Hit() {}
+void Player::Hit() {
+	Life--;
+}
 
 void Player::Hit(int BulletCnt) {
 	delete bullets[BulletCnt];
 	bullets[BulletCnt] = nullptr;
 
-	for (int i = BulletCnt + 1; i < 30; i++) {	//íeÇÃîzóÒÇ…Ç≈Ç´ÇΩãÛîíÇñÑÇﬂÇÈ
+	for (int i = BulletCnt + 1; i < BltLimit; i++) {	//íeÇÃîzóÒÇ…Ç≈Ç´ÇΩãÛîíÇñÑÇﬂÇÈ
 
 		if (bullets[i] == nullptr) { break; }
 

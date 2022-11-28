@@ -1,5 +1,6 @@
 #include "straightBlt.h"
 #include"DxLib.h"
+#include"common.h"
 
 #include<math.h>
 
@@ -29,8 +30,11 @@ bool straightBlt::isDeath() {
 	float x = GetLocation().X + GetRadius();
 	float y = GetLocation().Y + GetRadius();
 
+	int height = SCREEN_HEIGHT;
+	int width = SCREEN_WIDTH;
+
 	int margin = 20;
-	if (y < 0 - margin || y > 720 + margin || x < 0 - margin || y > 1280 + margin) {
+	if (y < 0 - margin || y > height + margin || x < 0 - margin || x > width + margin) {
 		return true;
 	}
 	return false;

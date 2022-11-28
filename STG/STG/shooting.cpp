@@ -5,6 +5,7 @@
 #include "DxLib.h"
 #include "Scenemng.h"
 #include "main.h"
+#include "common.h"
 
 /***********************************************
  * プログラムの開始
@@ -16,7 +17,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     SetMainWindowText("シューティング");
 
     ChangeWindowMode(TRUE);		// ウィンドウモードで起動
-    SetGraphMode(1280, 720, 16);
+    SetWindowSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+    SetGraphMode(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_COLOR_BIT_16);
 
     if (DxLib_Init() == -1) return -1;	// DXライブラリの初期化処理
 

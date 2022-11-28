@@ -2,6 +2,7 @@
 #include"main.h"
 #include"dxlib.h"
 #include"HPotion.h"
+#include"common.h"
 
 
 AbstractScene* GameMain::Update() {
@@ -20,7 +21,7 @@ AbstractScene* GameMain::Update() {
 
     //弾と敵の当たり
     BulletsBase** bullets = player->GetBullets();
-    for (int bulletcnt = 0; bulletcnt < 30; bulletcnt++) {
+    for (int bulletcnt = 0; bulletcnt < BltLimit; bulletcnt++) {
         if (bullets[bulletcnt] == nullptr)break;
         
         for (int enecnt = 0; enecnt < 10; enecnt++) {
@@ -57,6 +58,23 @@ AbstractScene* GameMain::Update() {
                     }
                     enecnt--;
                 }
+            }
+        }
+    }
+
+    //弾とプレイヤーの当たり
+    for (int ene = 0; ene < 10; ene++) {
+        BulletsBase** bullets = enemy[ene]->GetBullets();
+        for (int bulletcnt = 0; bulletcnt < BltLimit; bulletcnt++) {
+            if (bullets[bulletcnt] == nullptr)break;
+
+            if (bullets[bulletcnt]->HitSphere(player)) {
+                //弾が命中
+                player->Hit();
+
+                enemy[ene]->Hit(bulletcnt); //弾を消す
+                bullets = enemy[ene]->GetBullets();
+                bulletcnt--;
             }
         }
     }

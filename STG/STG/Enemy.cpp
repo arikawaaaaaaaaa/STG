@@ -2,8 +2,9 @@
 #include "enemy.h"
 #include "straightBlt.h"
 #include "KeyMng.h"
+#include"common.h"
 
-#define BltLimit 100
+#define AttackTime 5
 
 Enemy::Enemy (Location loc, float rad) : SphereColider(loc, rad) {
 	point = 10;
@@ -52,7 +53,7 @@ void Enemy::Update() {
 		}
 	}
 
-	if (bullets[bulletcount] == nullptr && bulletcount < BltLimit && Time % 4 == 0) {	//‰æ–Êã‚Ì’e‚Ì”‚ÍÅ‘å’l–¢–žH
+	if (bullets[bulletcount] == nullptr && bulletcount < BltLimit && Time % AttackTime == 0) {	//‰æ–Êã‚Ì’e‚Ì”‚ÍÅ‘å’l–¢–žH
 		bullets[bulletcount] = new straightBlt(GetLocation(), 5, 180);	//^‚È‚ç’e‚ð”­ŽË‚·‚é
 		Time = 0;
 	}
@@ -76,7 +77,21 @@ void Enemy::Hit(int damage) {
 
 }
 
-void Enemy::Hit() {}
+void Enemy::Hit(int BulletCnt) {
+
+	delete bullets[BulletCnt];
+	bullets[BulletCnt] = nullptr;
+
+	for (int i = BulletCnt + 1; i < BltLimit; i++) {	//’e‚Ì”z—ñ‚É‚Å‚«‚½‹ó”’‚ð–„‚ß‚é
+
+		if (bullets[i] == nullptr) { break; }
+
+		bullets[i - 1] = bullets[i];
+		bullets[i] = nullptr;
+	}
+}
+
+//void Enemy::Hit() {}
 
 bool Enemy::Checkhp() { 
 	bool let = (hp <= 0);
