@@ -75,7 +75,7 @@ void Player::Draw() {
 }
 
 void Player::Hit() {
-	Life--;
+	if (--Life < 0)Life = 0;
 }
 
 void Player::Hit(int BulletCnt) {

@@ -64,6 +64,9 @@ AbstractScene* GameMain::Update() {
 
     //弾とプレイヤーの当たり
     for (int ene = 0; ene < 10; ene++) {
+
+        if (enemy[ene] == nullptr)break;
+
         BulletsBase** bullets = enemy[ene]->GetBullets();
         for (int bulletcnt = 0; bulletcnt < BltLimit; bulletcnt++) {
             if (bullets[bulletcnt] == nullptr)break;
@@ -72,7 +75,7 @@ AbstractScene* GameMain::Update() {
                 //弾が命中
                 player->Hit();
 
-                enemy[ene]->Hit(bulletcnt); //弾を消す
+                enemy[ene]->HitPlayer(bulletcnt); //弾を消す
                 bullets = enemy[ene]->GetBullets();
                 bulletcnt--;
             }

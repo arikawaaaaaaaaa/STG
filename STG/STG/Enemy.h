@@ -7,6 +7,7 @@ class Enemy : public CharaBase, public SphereColider
 {
 private:
 	int hp;
+	int maxhp;
 	int point;
 
 	int Time;
@@ -19,7 +20,8 @@ public:
 	virtual void Draw() override;
 	virtual void Hit() override;
 	//virtual void Hit(int damage);
-	void Hit(int BulletCnt);
+	void Hit(int damage);
+	void HitPlayer(int BulletCnt);
 	bool Checkhp();
 	int Getpoint();
 

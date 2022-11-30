@@ -9,6 +9,7 @@
 Enemy::Enemy (Location loc, float rad) : SphereColider(loc, rad) {
 	point = 10;
 	hp = 10;
+	maxhp = hp;
 
 	Time = 0;
 
@@ -60,7 +61,19 @@ void Enemy::Update() {
 }
 
 void Enemy::Draw() {
-	DrawCircle((int)GetLocation().X, (int)GetLocation().Y, (int)GetRadius(), 0x00ff00);
+	int X = (int)GetLocation().X;
+	int Y = (int)GetLocation().Y;
+	int Rad = (int)GetRadius();
+
+	float size = 30;
+
+	DrawBox(X - size, Y - Rad - 10,
+			X + size, Y - Rad - 15, 0xff0000, TRUE);
+
+	DrawBox(X - size, Y - Rad - 10,
+			(X - size) + size * 2 * ((float)hp / maxhp), Y - Rad - 15, 0x00ff00, TRUE);
+
+	DrawCircle(X, Y, Rad, 0x00ff00);
 
 	for (int i = 0; i < BltLimit; i++) {
 		if (bullets[i] == nullptr) { break; }
@@ -77,7 +90,7 @@ void Enemy::Hit(int damage) {
 
 }
 
-void Enemy::Hit(int BulletCnt) {
+void Enemy::HitPlayer(int BulletCnt) {
 
 	delete bullets[BulletCnt];
 	bullets[BulletCnt] = nullptr;
@@ -91,7 +104,7 @@ void Enemy::Hit(int BulletCnt) {
 	}
 }
 
-//void Enemy::Hit() {}
+void Enemy::Hit() {}
 
 bool Enemy::Checkhp() { 
 	bool let = (hp <= 0);
