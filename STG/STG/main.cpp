@@ -75,7 +75,7 @@ AbstractScene* GameMain::Update() {
                 //弾が命中
                 player->Hit();
 
-                enemy[ene]->HitPlayer(bulletcnt); //弾を消す
+                enemy[ene]->DeleteBullet(bulletcnt); //弾を消す
                 bullets = enemy[ene]->GetBullets();
                 bulletcnt--;
             }

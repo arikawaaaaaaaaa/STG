@@ -2,6 +2,7 @@
 
 #include"DxLib.h"
 #include"Charabase.h"
+#include"player.h"
 
 class Enemy : public CharaBase, public SphereColider
 {
@@ -21,8 +22,10 @@ public:
 	virtual void Hit() override;
 	//virtual void Hit(int damage);
 	void Hit(int damage);
-	void HitPlayer(int BulletCnt);
+	//void HitPlayer(int BulletCnt);
 	bool Checkhp();
 	int Getpoint();
+	void DeleteBullet(int bulletCnt);
 
+	void SircleShot(int way, int spd, int angle);
 };

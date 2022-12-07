@@ -4,7 +4,9 @@
 #include "KeyMng.h"
 #include"common.h"
 
-#define AttackTime 5
+#include<math.h>
+
+#define AttackTime 10
 
 Enemy::Enemy (Location loc, float rad) : SphereColider(loc, rad) {
 	point = 10;
@@ -40,22 +42,13 @@ void Enemy::Update() {
 
 		if (bullets[bulletcount]->isDeath()) {	//弾が画面外に出た？
 
-			delete bullets[bulletcount];		//出た弾を消す
-			bullets[bulletcount] = nullptr;
-
-			for (int i = bulletcount + 1; i < BltLimit; i++) {	//弾の配列にできた空白を埋める
-
-				if (bullets[i] == nullptr) { break; }
-
-				bullets[i - 1] = bullets[i];
-				bullets[i] = nullptr;
-			}
+			DeleteBullet(bulletcount);
 			bulletcount--;
 		}
 	}
 
 	if (bullets[bulletcount] == nullptr && bulletcount < BltLimit && Time % AttackTime == 0) {	//画面上の弾の数は最大値未満？
-		bullets[bulletcount] = new straightBlt(GetLocation(), 5, 180);	//真なら弾を発射する
+		SircleShot(8, 5, GetRand(360));
 		Time = 0;
 	}
 }
@@ -67,9 +60,13 @@ void Enemy::Draw() {
 
 	float size = 30;
 
+	//体力バー
+
+	//赤いとこ
 	DrawBox(X - size, Y - Rad - 10,
 			X + size, Y - Rad - 15, 0xff0000, TRUE);
 
+	//緑のとこ
 	DrawBox(X - size, Y - Rad - 10,
 			(X - size) + size * 2 * ((float)hp / maxhp), Y - Rad - 15, 0x00ff00, TRUE);
 
@@ -90,7 +87,30 @@ void Enemy::Hit(int damage) {
 
 }
 
-void Enemy::HitPlayer(int BulletCnt) {
+//void Enemy::HitPlayer(int BulletCnt) {
+//
+//	delete bullets[BulletCnt];
+//	bullets[BulletCnt] = nullptr;
+//
+//	for (int i = BulletCnt + 1; i < BltLimit; i++) {	//弾の配列にできた空白を埋める
+//
+//		if (bullets[i] == nullptr) { break; }
+//
+//		bullets[i - 1] = bullets[i];
+//		bullets[i] = nullptr;
+//	}
+//}
+
+void Enemy::Hit() {}
+
+bool Enemy::Checkhp() { 
+	bool let = (hp <= 0);
+	return let;
+}
+
+int Enemy::Getpoint() { return point; }
+
+void Enemy::DeleteBullet(int BulletCnt) {
 
 	delete bullets[BulletCnt];
 	bullets[BulletCnt] = nullptr;
@@ -104,11 +124,17 @@ void Enemy::HitPlayer(int BulletCnt) {
 	}
 }
 
-void Enemy::Hit() {}
+void Enemy::SircleShot(int way, int spd, int ang) {
+	int shot = 0;
 
-bool Enemy::Checkhp() { 
-	bool let = (hp <= 0);
-	return let;
+	for (int bulletcount = 0; bulletcount < BltLimit || shot < way; bulletcount++) {
+
+		if (bullets[bulletcount] == nullptr && bulletcount < BltLimit) {
+			bullets[bulletcount] = new straightBlt(GetLocation(), 5, ang);	//弾を発射する
+			Time = 0;
+			shot++;
+			ang += (360 / way);
+		}
+	}
+
 }
-
-int Enemy::Getpoint() { return point; }
