@@ -6,8 +6,6 @@
 
 #include<math.h>
 
-#define AttackTime 10
-
 Enemy::Enemy (Location loc, float rad) : SphereColider(loc, rad) {
 	point = 10;
 	hp = 10;
@@ -28,7 +26,7 @@ Enemy::Enemy (Location loc, float rad) : SphereColider(loc, rad) {
 
 void Enemy::Update() {
 	Location NewLoc = GetLocation();
-	NewLoc.Y += speed.Y;
+	//NewLoc.Y += speed.Y;
 	SetLocation(NewLoc);
 
 	Time++;
@@ -42,18 +40,31 @@ void Enemy::Update() {
 
 		if (bullets[bulletcount]->isDeath()) {	//’e‚ª‰æ–ÊŠO‚Éo‚½H
 
-			DeleteBullet(bulletcount);
+			DeleteBullet(bulletcount);	//’e‚ğÁ‚·
 			bulletcount--;
 		}
 	}
 
+	int AttackTime = 10;	//UŒ‚ŠÔŠu
 	if (bullets[bulletcount] == nullptr && bulletcount < BltLimit && Time % AttackTime == 0) {	//‰æ–Êã‚Ì’e‚Ì”‚ÍÅ‘å’l–¢–H
-		SircleShot(8, 5, GetRand(360));
+		switch (hp)
+		{
+		case 10:
+			SircleShot(8, 3, GetRand(360));
+			break;
+
+		case 9:
+			HomingShot(3);
+			break;
+
+		default:
+			break;
+		}
 		Time = 0;
 	}
 }
 
-void Enemy::Draw() {
+void Enemy::Draw() {	//•`‰æ
 	int X = (int)GetLocation().X;
 	int Y = (int)GetLocation().Y;
 	int Rad = (int)GetRadius();
@@ -70,15 +81,15 @@ void Enemy::Draw() {
 	DrawBox(X - size, Y - Rad - 10,
 			(X - size) + size * 2 * ((float)hp / maxhp), Y - Rad - 15, 0x00ff00, TRUE);
 
-	DrawCircle(X, Y, Rad, 0x00ff00);
+	DrawCircle(X, Y, Rad, 0x00ff00);	//“G–{‘Ì
 
-	for (int i = 0; i < BltLimit; i++) {
+	for (int i = 0; i < BltLimit; i++) {	//’e
 		if (bullets[i] == nullptr) { break; }
 		bullets[i]->Draw();
 	}
 }
 
-void Enemy::Hit(int damage) {
+void Enemy::Hit(int damage) {	//”í’e
 
 	if (damage >= 0) {
 		hp -= damage;
@@ -110,7 +121,7 @@ bool Enemy::Checkhp() {
 
 int Enemy::Getpoint() { return point; }
 
-void Enemy::DeleteBullet(int BulletCnt) {
+void Enemy::DeleteBullet(int BulletCnt) {		//’e‚ğÁ‚·
 
 	delete bullets[BulletCnt];
 	bullets[BulletCnt] = nullptr;
@@ -124,17 +135,41 @@ void Enemy::DeleteBullet(int BulletCnt) {
 	}
 }
 
-void Enemy::SircleShot(int way, int spd, int ang) {
-	int shot = 0;
+void Enemy::GetPlayerStat(Player* player) {		//ƒvƒŒƒCƒ„[‚ÌÀ•W‚ğæ“¾
 
-	for (int bulletcount = 0; bulletcount < BltLimit || shot < way; bulletcount++) {
+	PlayerX = player->GetLocation().X;
+	PlayerY = player->GetLocation().Y;
+}
+
+void Enemy::SircleShot(int way, int spd, int ang) {		//‰~Œ`ƒVƒ‡ƒbƒg(way”A’e‘¬AŠp“x)
+	int shot = 0;	//’e‚ğ”­Ë‚µ‚½”
+
+	for (int bulletcount = 0; bulletcount < BltLimit && shot < way; bulletcount++) {
 
 		if (bullets[bulletcount] == nullptr && bulletcount < BltLimit) {
-			bullets[bulletcount] = new straightBlt(GetLocation(), 5, ang);	//’e‚ğ”­Ë‚·‚é
-			Time = 0;
-			shot++;
-			ang += (360 / way);
+			bullets[bulletcount] = new straightBlt(GetLocation(), spd, ang);	//’e‚ğ”­Ë‚·‚é
+			shot++;				//”­Ë‚µ‚½”‚ğ‘‚â‚·
+			ang += (360 / way);	//Šp“x‚ğ’²®‚·‚é
 		}
+
 	}
 
+}
+
+void Enemy::HomingShot(int spd) {		//©‹@‘_‚¢(’e‘¬)
+
+	//ƒvƒŒƒCƒ„[ŠÔ‚ÌŠp“xæ“¾------
+	double tan = atan2(((double)PlayerY - GetLocation().Y),
+		(double)PlayerX - GetLocation().X);
+
+	int ang = (int)(tan * 180 / PI) + 90;
+	//----------------------------
+
+	for (int bulletcount = 0; bulletcount < BltLimit; bulletcount++) {
+
+		if (bullets[bulletcount] == nullptr && bulletcount < BltLimit) {
+			bullets[bulletcount] = new straightBlt(GetLocation(), spd, ang);	//’e‚ğ”­Ë‚·‚é
+			break;
+		}
+	}
 }

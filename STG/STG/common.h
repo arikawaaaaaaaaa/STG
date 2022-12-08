@@ -1,6 +1,6 @@
 #pragma once
 
-#define BltLimit 100
+#define BltLimit 255	//’e‚ÌÅ‘åŠ”
 
 #define SCREEN_HEIGHT 720
 #define SCREEN_WIDTH 1280

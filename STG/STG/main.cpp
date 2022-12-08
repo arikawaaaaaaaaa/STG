@@ -12,6 +12,7 @@ AbstractScene* GameMain::Update() {
         if (enemy[i] == nullptr)break;
 
         enemy[i]->Update();
+        enemy[i]->GetPlayerStat(player);
     }
     for (int i = 0; i < 10; i++) {
         if (items[i] == nullptr)break;
