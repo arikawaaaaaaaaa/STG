@@ -1,13 +1,15 @@
 #pragma once
 #include "BulletsBase.h"
+#include "common.h"
+#include "Enemy.h"
 
-class straightBlt : public BulletsBase
+class bltInBlt : public BulletsBase
 {
 private:
 	int image;
 
 public:
-	straightBlt(Location loc, float spd, float ang);	//コンストラクタ
+	bltInBlt(Location loc, float spd, float ang);	//コンストラクタ
 
 public:
 	virtual void Update() override;

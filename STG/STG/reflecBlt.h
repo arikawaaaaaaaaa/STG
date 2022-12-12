@@ -1,17 +1,19 @@
 #pragma once
 #include "BulletsBase.h"
 
-class straightBlt : public BulletsBase
+class reflecBlt : public BulletsBase
 {
 private:
 	int image;
+	int Refcnt;
 
 public:
-	straightBlt(Location loc, float spd, float ang);	//コンストラクタ
+	reflecBlt(Location loc, float spd, float ang, int ref);	//コンストラクタ
 
 public:
 	virtual void Update() override;
 	virtual void Draw() override;
 	virtual bool isDeath() override;
 };
+
 

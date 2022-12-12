@@ -1,6 +1,8 @@
 #pragma once
 #include"SphereColider.h"
 
+constexpr auto PI = 3.1415926f;
+
 class BulletsBase : public SphereColider
 {
 protected:

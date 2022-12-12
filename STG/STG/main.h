@@ -15,8 +15,8 @@ private:
 public:
 	GameMain() {
 		Location location;
-		location.X = 10;
-		location.Y = 100;
+		location.X = 1280 / 2;
+		location.Y = 650;
 
 		time = 0;
 

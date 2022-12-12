@@ -11,6 +11,8 @@ private:
 	int maxhp;
 	int point;
 
+	int shotnum;
+
 	//プレイヤーの座標
 	int PlayerX;
 	int PlayerY;
@@ -34,6 +36,6 @@ public:
 
 	void GetPlayerStat(Player* player);	//プレイヤー情報取得
 
-	void SircleShot(int way, int spd, int angle);	//円形ショット(way数、弾速、角度)
-	void HomingShot(int spd);						//自機狙い(弾速)
+	void SircleShot(Location loc, int way, int spd, float angle, bool ref);	//円形ショット(way数、弾速、角度、反射するか)
+	void HomingShot(Location loc, int spd);						//自機狙い(弾速)
 };
