@@ -72,9 +72,9 @@ void Enemy::Update() {
 
 		case 7:
 			AttackTime = 3;
-			if (Time % AttackTime == 0) SircleShot(GetLocation(), 3, 6, shotnum, false);
-			if (Time % 600 < 300)shotnum += Time % 300 / 4;
-			else shotnum -= (300 - Time % 300) / 4;
+			if (Time % AttackTime == 0) SircleShot(GetLocation(), 6, 2, shotnum, false);
+			if (Time % 600 < 300)shotnum += Time % 300 / 8;
+			else shotnum -= (300 - Time % 300) / 8;
 			break;
 
 		default:
