@@ -57,7 +57,7 @@ void Enemy::Update() {
 		{
 		case 10:
 			AttackTime = 10;
-			if (Time % AttackTime == 0) SircleShot(GetLocation(), 8, 3, GetRand(360), false);
+			if (Time % AttackTime == 0) SircleShot(GetLocation(), 8, 3, GetRand(360));
 			break;
 
 		case 9:
@@ -67,12 +67,12 @@ void Enemy::Update() {
 
 		case 8:
 			AttackTime = 120;
-			if (Time % AttackTime == 0) SircleShot({ GetRand(160) + GetLocation().X - 80,GetRand(160) + GetLocation().Y - 80 }, 36, 2, GetRand(360), true);
+			if (Time % AttackTime == 0) SirclerefShot({ GetRand(160) + GetLocation().X - 80,GetRand(160) + GetLocation().Y - 80 }, 36, 2, GetRand(360), true, true, false, true);
 			break;
 
 		case 7:
 			AttackTime = 3;
-			if (Time % AttackTime == 0) SircleShot(GetLocation(), 6, 2, shotnum, false);
+			if (Time % AttackTime == 0) SircleShot(GetLocation(), 6, 2, shotnum);
 			if (Time % 600 < 300)shotnum += Time % 300 / 8;
 			else shotnum -= (300 - Time % 300) / 8;
 			break;
@@ -160,15 +160,31 @@ void Enemy::GetPlayerStat(Player* player) {		//プレイヤーの座標を取得
 	PlayerY = player->GetLocation().Y;
 }
 
-void Enemy::SircleShot(Location loc, int way, int spd, float ang, bool ref) {		//円形ショット(way数、弾速、角度、反射するか)
+void Enemy::SircleShot(Location loc, int way, int spd, float ang) {		//円形ショット(way数、弾速、角度)
 	int shot = 0;	//弾を発射した数
 
 	for (int bulletcount = 0; bulletcount < BltLimit && shot < way; bulletcount++) {
 
 		if (bullets[bulletcount] == nullptr && bulletcount < BltLimit) {
 
-			if (!ref)bullets[bulletcount] = new straightBlt(loc, spd, ang);	//弾を発射する
-			else bullets[bulletcount] = new reflecBlt(loc, spd, ang, 1);	//弾を発射する
+			bullets[bulletcount] = new straightBlt(loc, spd, ang);	//弾を発射する
+
+			shot++;				//発射した数を増やす
+			ang += (360.f / way);	//角度を調整する
+		}
+
+	}
+
+}
+
+void Enemy::SirclerefShot(Location loc, int way, int spd, float ang, bool up, bool right, bool down, bool left) {		//円形ショット(way数、弾速、角度、各方向の壁で反射するか(それぞれ上、右、下、左方向))
+	int shot = 0;	//弾を発射した数
+
+	for (int bulletcount = 0; bulletcount < BltLimit && shot < way; bulletcount++) {
+
+		if (bullets[bulletcount] == nullptr && bulletcount < BltLimit) {
+
+			bullets[bulletcount] = new reflecBlt(loc, spd, ang, 1, up, right, down, left);	//弾を発射する
 
 			shot++;				//発射した数を増やす
 			ang += (360.f / way);	//角度を調整する

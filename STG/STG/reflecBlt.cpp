@@ -4,7 +4,7 @@
 
 #include<math.h>
 
-reflecBlt::reflecBlt(Location loc, float spd, float ang, int ref) :BulletsBase(loc, 5.f, 1, Location{ 0,0 }) {
+reflecBlt::reflecBlt(Location loc, float spd, float ang, int ref, bool up, bool right, bool down, bool left) :BulletsBase(loc, 5.f, 1, Location{ 0,0 }) {
 	image = 0;
 	Refcnt = ref;
 
@@ -12,6 +12,11 @@ reflecBlt::reflecBlt(Location loc, float spd, float ang, int ref) :BulletsBase(l
 	float angle = (PI / 180) * ang;
 	speed.X = (cos(angle) == 0) ? 0 : cos(angle) * spd;	//Šp“x‚ª90‚©270‚¾‚Æ0™ŽZ‚µ‚Ä‚µ‚Ü‚¤
 	speed.Y = sin(angle) * spd;
+
+	wall.UP = up;
+	wall.RIGHT = right;
+	wall.DOWN =down;
+	wall.LEFT = left;
 }
 
 void reflecBlt::Update() {
@@ -20,12 +25,20 @@ void reflecBlt::Update() {
 	NewLoc.Y -= speed.Y;
 
 	if (Refcnt > 0) {
-		if (NewLoc.X <= 0 || NewLoc.X >= SCREEN_WIDTH) {
+		if (NewLoc.Y <= 0 && wall.UP) {
+			speed.Y *= -1;
+			Refcnt--;
+		}
+		if (NewLoc.X >= SCREEN_WIDTH && wall.RIGHT) {
 			speed.X *= -1;
 			Refcnt--;
 		}
-		if (NewLoc.Y <= 0 || NewLoc.Y >= SCREEN_HEIGHT) {
+		if (NewLoc.Y >= SCREEN_HEIGHT && wall.DOWN) {
 			speed.Y *= -1;
+			Refcnt--;
+		}
+		if (NewLoc.X <= 0 && wall.LEFT) {
+			speed.X *= -1;
 			Refcnt--;
 		}
 	}

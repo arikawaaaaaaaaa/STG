@@ -36,6 +36,7 @@ public:
 
 	void GetPlayerStat(Player* player);	//プレイヤー情報取得
 
-	void SircleShot(Location loc, int way, int spd, float angle, bool ref);	//円形ショット(way数、弾速、角度、反射するか)
+	void SircleShot(Location loc, int way, int spd, float angle);	//円形ショット(way数、弾速、角度)
+	void SirclerefShot(Location loc, int way, int spd, float angle, bool up, bool right, bool down, bool left);	//円形反射ショット(way数、弾速、角度、各方向の壁で反射するか(それぞれ上、右、下、左方向))
 	void HomingShot(Location loc, int spd);						//自機狙い(弾速)
 };
