@@ -7,6 +7,32 @@
 
 #include<math.h>
 
+struct Moveinfo {
+	int pattern;	//s“®ƒpƒ^[ƒ“
+	Location Point;	//–Ú“I’n
+	int nextPointnum;	//Ÿ‚Ì”z—ñ”Ô†
+	int Waittime;	//‘Ò‚¿ŠÔ
+	int  attack;	//UŒ‚‚Ìí—Ş
+};
+
+Moveinfo moveinfo[5] = {
+	{0, 640,150,1,  0,0} ,
+	{0,1200,150,2,  0,0},
+	{1,   0,  0,3,300,1},
+	{0,  80,150,4,  0,2},
+	{1,   0,  0,1,300,1},
+};
+
+Location locations[3] = {
+	{640,150},
+	{1200,150},
+	{80,150},
+};
+
+int next[3] = { 1,2,1 };
+
+int current = 0;
+
 Enemy::Enemy (Location loc, float rad) : SphereColider(loc, rad) {
 	point = 10;
 	hp = 10;
@@ -22,7 +48,7 @@ Enemy::Enemy (Location loc, float rad) : SphereColider(loc, rad) {
 	//point‰Šú‰»
 	//hp‰Šú‰»
 
-	speed = Location{ 0,0.3 };
+	speed = Location{ 2,2 };
 
 	bullets = new BulletsBase* [BltLimit];
 	for (int i = 0; i < BltLimit; i++) {
@@ -31,9 +57,11 @@ Enemy::Enemy (Location loc, float rad) : SphereColider(loc, rad) {
 }
 
 void Enemy::Update() {
-	Location NewLoc = GetLocation();
-	//NewLoc.Y += speed.Y;
-	SetLocation(NewLoc);
+	//Location NewLoc = GetLocation();
+	////NewLoc.Y += speed.Y;
+	//SetLocation(NewLoc);
+
+	Move(0);
 
 	Time++;
 
@@ -175,6 +203,42 @@ void Enemy::SircleShot(Location loc, int way, int spd, float ang) {		//‰~Œ`ƒVƒ‡ƒ
 
 	}
 
+}
+
+void Enemy::Move(float movetime) {
+
+	Location NewLoc = GetLocation();
+
+	if ((NewLoc.X == moveinfo[current].Point.X) &&
+		(NewLoc.Y == moveinfo[current].Point.Y)) {
+		current = moveinfo[current].nextPointnum;
+		return;
+	}
+	else {
+		if (NewLoc.X != moveinfo[current].Point.X) {
+			if (NewLoc.X < moveinfo[current].Point.X) {
+				NewLoc.X += speed.X;
+				if (moveinfo[current].Point.X < NewLoc.X) NewLoc.X == moveinfo[current].Point.X;
+			}
+			else if (moveinfo[current].Point.X < NewLoc.X ) {
+				NewLoc.X -= speed.X;
+				if (NewLoc.X < locations[current].X) NewLoc.X == moveinfo[current].Point.X;
+			}
+		}
+		if (NewLoc.Y != moveinfo[current].Point.Y) {
+			if (NewLoc.Y < moveinfo[current].Point.Y) {
+				NewLoc.Y += speed.Y;
+				if (moveinfo[current].Point.Y < NewLoc.Y) NewLoc.Y == moveinfo[current].Point.Y;
+			}
+			else if (moveinfo[current].Point.Y < NewLoc.Y) {
+				NewLoc.Y -= speed.Y;
+				if (NewLoc.Y < moveinfo[current].Point.Y) NewLoc.Y == moveinfo[current].Point.Y;
+			}
+		}
+	}
+
+	SetLocation(NewLoc);
+	
 }
 
 void Enemy::SirclerefShot(Location loc, int way, int spd, float ang, bool up, bool right, bool down, bool left) {		//‰~Œ`ƒVƒ‡ƒbƒg(way”A’e‘¬AŠp“xAŠe•ûŒü‚Ì•Ç‚Å”½Ë‚·‚é‚©(‚»‚ê‚¼‚êãA‰EA‰ºA¶•ûŒü))

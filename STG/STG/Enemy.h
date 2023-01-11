@@ -34,6 +34,8 @@ public:
 	int Getpoint();
 	void DeleteBullet(int bulletCnt);	//弾を消す
 
+	void Move(float movetime);
+
 	void GetPlayerStat(Player* player);	//プレイヤー情報取得
 
 	void SircleShot(Location loc, int way, int spd, float angle);	//円形ショット(way数、弾速、角度)
