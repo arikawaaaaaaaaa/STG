@@ -34,7 +34,7 @@ public:
 	int Getpoint();
 	void DeleteBullet(int bulletCnt);	//’e‚ğÁ‚·
 
-	void Move(float movetime);
+	void Move();
 
 	void GetPlayerStat(Player* player);	//ƒvƒŒƒCƒ„[î•ñæ“¾
 
