@@ -2,6 +2,7 @@
 #include "enemy.h"
 #include "straightBlt.h"
 #include "reflecBlt.h"
+#include "StopBlt.h"
 #include "KeyMng.h"
 #include"common.h"
 
@@ -19,14 +20,14 @@ struct Moveinfo {
 
 Moveinfo moveinfo[] = {
 	{0, 640,150,1,  0,0},
-	{0, 100,360,2,  0,2},
-	{1,   0,  0,3,300,1},
-	{0, 640,570,4,  0,2},
-	{1,   0,  0,5,300,1},
-	{0,1180,360,6,  0,2},
-	{1,   0,  0,7,300,1},
+	{0, 490,200,2,  0,2},
+	{1,   0,  0,3,180,1},
+	{0, 640,250,4,  0,2},
+	{1,   0,  0,5,180,1},
+	{0, 740,200,6,  0,2},
+	{1,   0,  0,7,180,1},
 	{0, 640,150,8,  0,2},
-	{1,   0,  0,1,300,1},
+	{1,   0,  0,1,180,1},
 };
 
 //Location locations[3] = {
@@ -81,23 +82,32 @@ void Enemy::Update() {
 		if (moveinfo[current].Waittime <= waittime) {
 			waittime = 0;
 			current = moveinfo[current].nextPointnum;
+			Time = 0;
 		}
 		break;
 	}
 
-	Time++;
-
 	int AttackTime = 0;	//UŒ‚ŠÔŠu
 	if (moveinfo[current].attack != 0) {
 		if (moveinfo[current].attack == 1) {
-			AttackTime = 20;
-			if (Time % AttackTime == 0) SircleShot(GetLocation(), 8, 3, GetRand(360));	//‰~Œ`ƒVƒ‡ƒbƒg
+			AttackTime = 60;
+			if (Time == 60) {
+
+				int angle = GetRand(360 - 1);
+				SircleStopShot(GetLocation(), 45, 5, angle, 30, 60, angle + 60, 2, true);
+				SircleStopShot(GetLocation(), 45, 5, angle + (360 / 40 /2) , 30, 60, angle+(360/80) - 60, 2, true);
+				angle = GetRand(360 - 1);
+				SircleStopShot(GetLocation(), 45, 10, angle, 30, 60, angle + 60, 2, true);
+				SircleStopShot(GetLocation(), 45, 10, angle + (360 / 40 / 2), 30, 60, angle + (360 / 80) - 60, 2, true);
+				angle = GetRand(360 - 1);
+				SircleStopShot(GetLocation(), 45, 15, angle, 30, 60, angle + 60, 2, true);
+				SircleStopShot(GetLocation(), 45, 15, angle + (360 / 40 / 2), 30, 60, angle + (360 / 80) - 60, 2, true);
+			}
 		}
 
 		if (moveinfo[current].attack == 2) {
-			AttackTime = 120;
-			if (Time % AttackTime == 0) SirclerefShot({ GetRand(160) + GetLocation().X - 80,GetRand(160) + GetLocation().Y - 80 }, 36, 2, GetRand(360),
-														true, true, false, true);		//”½ŽË‰~Œ`ƒVƒ‡ƒbƒg
+			AttackTime = 15;
+			//if (Time % AttackTime == 0) SircleShot(GetLocation(), 8, 3, GetRand(360));
 		}
 	}
 
@@ -115,6 +125,8 @@ void Enemy::Update() {
 			bulletcount--;
 		}
 	}
+
+	Time++;
 
 
 	//if (bullets[bulletcount] == nullptr && bulletcount < BltLimit) {	//‰æ–Êã‚Ì’e‚Ì”‚ÍÅ‘å’l–¢–žH
@@ -250,6 +262,7 @@ void Enemy::Move() {
 	if ((NewLoc.X == moveinfo[current].Point.X) &&
 		(NewLoc.Y == moveinfo[current].Point.Y)) {
 		current = moveinfo[current].nextPointnum;
+		Time = 0;
 		return;
 	}
 	else {
@@ -326,4 +339,34 @@ void Enemy::HomingShot(Location loc, int spd) {		//Ž©‹@‘_‚¢(’e‘¬)
 			break;
 		}
 	}
+}
+
+void Enemy::StopShot(Location loc, int Stspd, float Stang, int stop, int time, int Reang,int Respd) {
+
+	for (int bulletcount = 0; bulletcount < BltLimit; bulletcount++) {
+
+		if (bullets[bulletcount] == nullptr && bulletcount < BltLimit) {
+			bullets[bulletcount] = new StopBlt(loc, Stspd, Stang, stop, time, Reang, Respd);	//’e‚ð”­ŽË‚·‚é
+			break;
+		}
+	}
+}
+
+//ˆê“xŽ~‚Ü‚é‰~Œ`ƒVƒ‡ƒbƒg(’e‘¬Away”AFA‰‚ß‚Ì‘¬“xAŽ~‚Ü‚é‚Ü‚Å‚ÌŽžŠÔA‘Ò‹@ŽžŠÔAŽŸ‚Ì‘¬“xAŽŸ‚Ì’e‘¬AReang‚ðway”‚É‰ž‚¶‚Ä•Ï‰»‚³‚¹‚é‚©)
+void Enemy::SircleStopShot(Location loc, int way, int Stspd, float Stang, int stop, int time, int Reang, int Respd, bool ChangeReang) {
+	int shot = 0;	//’e‚ð”­ŽË‚µ‚½”
+
+	for (int bulletcount = 0; bulletcount < BltLimit && shot < way; bulletcount++) {
+
+		if (bullets[bulletcount] == nullptr && bulletcount < BltLimit) {
+
+			bullets[bulletcount] = new StopBlt(loc, Stspd, Stang, stop, time, Reang, Respd);	//’e‚ð”­ŽË‚·‚é
+
+			shot++;				//”­ŽË‚µ‚½”‚ð‘‚â‚·
+			Stang += (360.f / way);	//Šp“x‚ð’²®‚·‚é
+			if (ChangeReang)Reang += (360.f / way);
+		}
+
+	}
+
 }

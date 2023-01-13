@@ -165,6 +165,7 @@
     <ClCompile Include="Scenemng.cpp" />
     <ClCompile Include="shooting.cpp" />
     <ClCompile Include="SphereColider.cpp" />
+    <ClCompile Include="StopBlt.cpp" />
     <ClCompile Include="straightBlt.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -182,6 +183,7 @@
     <ClInclude Include="rotaBlt.h" />
     <ClInclude Include="Scenemng.h" />
     <ClInclude Include="SphereColider.h" />
+    <ClInclude Include="StopBlt.h" />
     <ClInclude Include="straightBlt.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

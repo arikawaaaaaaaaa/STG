@@ -9,7 +9,7 @@ straightBlt::straightBlt(Location loc, float spd, float ang) :BulletsBase(loc, 5
 
 	ang += 90;
 	float angle = (PI / 180) * ang;
-	speed.X = (cos(ang) == 0) ? 0 : cos(angle) * spd;	//Šp“x‚ª90‚©270‚¾‚Æ0™Z‚µ‚Ä‚µ‚Ü‚¤
+	speed.X = (cos(angle) == 0) ? 0 : cos(angle) * spd;	//Šp“x‚ª90‚©270‚¾‚Æ0™Z‚µ‚Ä‚µ‚Ü‚¤
 	speed.Y = sin(angle) * spd;
 }
 

@@ -119,20 +119,23 @@ int Player::GetScore() { return Score; }
 
 Location GetNewLocation(Location NewLoc) {
 	
+	float spd = 3.0;
+	if (KeyMng::OnPress(KEY_INPUT_LSHIFT))spd = 1.5;
+
 	if (KeyMng::OnPress(KEY_INPUT_RIGHT)) {
-		NewLoc.X += 3.0f;
+		NewLoc.X += spd;
 		//if (KeyMng::OnPress(KEY_INPUT_UP) || KeyMng::OnPress(KEY_INPUT_DOWN)) NewLoc.X -= 1.5f;
 	}
 	if (KeyMng::OnPress(KEY_INPUT_LEFT)) {
-		NewLoc.X -= 3.0f;
+		NewLoc.X -= spd;
 		//if (KeyMng::OnPress(KEY_INPUT_UP) || KeyMng::OnPress(KEY_INPUT_DOWN)) NewLoc.X += 1.5f;
 	}
 	if (KeyMng::OnPress(KEY_INPUT_UP)) {
-		NewLoc.Y -= 3.0f;
+		NewLoc.Y -= spd;
 		//if (KeyMng::OnPress(KEY_INPUT_LEFT) || KeyMng::OnPress(KEY_INPUT_RIGHT)) NewLoc.Y += 1.5f;
 	}
 	if (KeyMng::OnPress(KEY_INPUT_DOWN)) {
-		NewLoc.Y += 3.0f;
+		NewLoc.Y += spd;
 		//if (KeyMng::OnPress(KEY_INPUT_LEFT) || KeyMng::OnPress(KEY_INPUT_RIGHT)) NewLoc.Y -= 1.5f;
 	}
 

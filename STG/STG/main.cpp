@@ -128,6 +128,6 @@ void GameMain::Draw() const {
         items[i]->Draw();
     }
 
-    DrawFormatString(200, 200, 0xffffff, "%d", player->GetScore());
-    DrawString(200, 300, "GAMEMAIN", 0xffffff);
+    DrawFormatString(200, 50, 0xffffff, "%d", player->GetScore());
+    DrawString(200, 0, "GAMEMAIN", 0xffffff);
 }
