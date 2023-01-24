@@ -13,6 +13,8 @@ Player::Player(Location loc, float rad) :SphereColider(loc, rad) {
 	Score = 0;
 	Life = 5;
 
+	ShotCool = 0;
+
 	//image‰Šú‰»
 	//speed‰Šú‰»
 
@@ -50,12 +52,14 @@ void Player::Update() {
 		}
 	}
 
-	if (KeyMng::OnClick(KEY_INPUT_Z)) {	//’e‚ğ”­Ë‚·‚é
+	if (KeyMng::OnPress(KEY_INPUT_Z) && ShotCool <= 0) {	//’e‚ğ”­Ë‚·‚é
 		if (bullets[bulletcount] == nullptr && bulletcount < BltLimit) {	//‰æ–Êã‚Ì’e‚Ì”‚ÍÅ‘å’l–¢–H
-			bullets[bulletcount] = new straightBlt(GetLocation(), 5, 0.f);	//^‚È‚ç’e‚ğ”­Ë‚·‚é
+			bullets[bulletcount] = new straightBlt(GetLocation(), 7, 0.f);	//^‚È‚ç’e‚ğ”­Ë‚·‚é
+			ShotCool = 4;
 		}
 	}
 
+	if (0 < ShotCool)ShotCool--;
 }
 
 void Player::Draw() {

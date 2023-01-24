@@ -11,6 +11,8 @@ private:
 	int Life;
 	int Score;
 
+	int ShotCool;
+
 public:
 	Player(Location loc, float rad);
 	//~Player();

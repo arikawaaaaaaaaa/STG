@@ -43,7 +43,7 @@ int waittime = 0;
 
 Enemy::Enemy (Location loc, float rad) : SphereColider(loc, rad) {
 	point = 10;
-	hp = 10;
+	hp = 100;
 	maxhp = hp;
 
 	shotnum = 0;
