@@ -8,27 +8,20 @@
 
 #include<math.h>
 
-struct Moveinfo {
-	int pattern;	//行動パターン
-	Location Point;	//目的地
-	int nextPointnum;	//次の配列番号
-	int Waittime;	//待ち時間
-	int  attack;	//攻撃の種類
-};
-
 //マップ端 X 1280 Y 720
+//
+//Moveinfo moveinfo[] = {
+//	{0, 640,150,1,  0,0},
+//	{0, 490,200,2,  0,2},
+//	{1,   0,  0,3,180,1},
+//	{0, 640,250,4,  0,2},
+//	{1,   0,  0,5,180,1},
+//	{0, 740,200,6,  0,2},
+//	{1,   0,  0,7,180,1},
+//	{0, 640,150,8,  0,2},
+//	{1,   0,  0,1,180,1},
+//};
 
-Moveinfo moveinfo[] = {
-	{0, 640,150,1,  0,0},
-	{0, 490,200,2,  0,2},
-	{1,   0,  0,3,180,1},
-	{0, 640,250,4,  0,2},
-	{1,   0,  0,5,180,1},
-	{0, 740,200,6,  0,2},
-	{1,   0,  0,7,180,1},
-	{0, 640,150,8,  0,2},
-	{1,   0,  0,1,180,1},
-};
 
 //Location locations[3] = {
 //	{640,150},
@@ -36,12 +29,36 @@ Moveinfo moveinfo[] = {
 //	{80,150},
 //};
 
-int next[3] = { 1,2,1 };
+void Enemy::inputCSV() {
+	FILE* fp; //FILE型構造体
+	errno_t error;
+	error = fopen_s(&fp, "data/moveinfo.csv", "r");
 
-int current = 0;
-int waittime = 0;
+	if (error != 0) {
+		//ファイルが開けていない
+		return;
+	}
+	else {
+		//ファイルが開けた
+		char line[100];
+		for (int i = 0; fgets(line, 100, fp) != NULL; i++) {
+			sscanf_s(line, "%d,%f,%f,%d,%d,%d",
+				&moveinfo[i].pattern,
+				&moveinfo[i].Point.X,
+				&moveinfo[i].Point.Y,
+				&moveinfo[i].nextPointnum,
+				&moveinfo[i].Waittime,
+				&moveinfo[i].attack
+				);
+		}
+		return;
+	}
+
+	fclose(fp);	//ファイルを閉じる
+}
 
 Enemy::Enemy (Location loc, float rad) : SphereColider(loc, rad) {
+
 	point = 10;
 	hp = 100;
 	maxhp = hp;
@@ -62,6 +79,12 @@ Enemy::Enemy (Location loc, float rad) : SphereColider(loc, rad) {
 	for (int i = 0; i < BltLimit; i++) {
 		bullets[i] = nullptr;
 	}
+
+	//攻撃パターン読み込み
+	inputCSV();
+
+	current = 0;
+	waittime = 0;
 }
 
 void Enemy::Update() {

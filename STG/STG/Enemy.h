@@ -4,6 +4,14 @@
 #include"Charabase.h"
 #include"player.h"
 
+struct Moveinfo {
+int pattern;	//行動パターン
+Location Point;	//目的地
+int nextPointnum;	//次の配列番号
+int Waittime;	//待ち時間
+int  attack;	//攻撃の種類
+};
+
 class Enemy : public CharaBase, public SphereColider
 {
 private:
@@ -20,6 +28,11 @@ private:
 	//攻撃の待機時間など
 	int Time;
 
+	//攻撃パターン
+	Moveinfo moveinfo[9];
+	int current;
+	int waittime;
+
 public:
 	Enemy(Location loc, float rad);
 
@@ -33,6 +46,9 @@ public:
 	bool Checkhp();
 	int Getpoint();
 	void DeleteBullet(int bulletCnt);	//弾を消す
+
+	//攻撃パターン読み込み
+	void inputCSV();
 
 	void Move();
 

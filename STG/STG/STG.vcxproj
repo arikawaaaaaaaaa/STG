@@ -167,6 +167,7 @@
     <ClCompile Include="SphereColider.cpp" />
     <ClCompile Include="StopBlt.cpp" />
     <ClCompile Include="straightBlt.cpp" />
+    <ClCompile Include="Title.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bltInBlt.h" />
@@ -185,6 +186,7 @@
     <ClInclude Include="SphereColider.h" />
     <ClInclude Include="StopBlt.h" />
     <ClInclude Include="straightBlt.h" />
+    <ClInclude Include="Title.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

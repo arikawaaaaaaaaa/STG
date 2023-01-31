@@ -4,6 +4,7 @@
 ********************************************************************/
 #include "DxLib.h"
 #include "Scenemng.h"
+#include "Title.h"
 #include "main.h"
 #include "common.h"
 
@@ -26,7 +27,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
     SetFontSize(20);		// 文字サイズを設定
 
-    SceneManager sceneMng(new GameMain);
+    SceneManager sceneMng(new Title);
 
     // ゲームループ
     while (ProcessMessage() == 0 && sceneMng.Update() != nullptr) {
