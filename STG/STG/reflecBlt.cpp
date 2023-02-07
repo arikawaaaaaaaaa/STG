@@ -4,8 +4,11 @@
 
 #include<math.h>
 
-reflecBlt::reflecBlt(Location loc, float spd, float ang, int ref, bool up, bool right, bool down, bool left) :BulletsBase(loc, 5.f, 1, Location{ 0,0 }) {
-	image = 0;
+reflecBlt::reflecBlt(Location loc, float spd, float ang, int ref, bool up, bool right, bool down, bool left, int col) :BulletsBase(loc, 5.f, 1, Location{ 0,0 }) {
+	LoadDivGraph("images/bullet_c.png", 8, 8, 1, 12, 14, image);
+	color = col;
+
+	DrawAng = (PI / 180) * ang;
 	Refcnt = ref;
 
 	ang += 90;
@@ -24,9 +27,12 @@ void reflecBlt::Update() {
 	NewLoc.X -= speed.X;
 	NewLoc.Y -= speed.Y;
 
+	int Nowang = (((DrawAng) / 2 / PI) * 360);
+
 	if (Refcnt > 0) {
 		if (NewLoc.Y <= 0 && wall.UP) {
 			speed.Y *= -1;
+			DrawAng = (PI / 180) * (180 - Nowang);
 			Refcnt--;
 		}
 		if (NewLoc.X >= SCREEN_WIDTH && wall.RIGHT) {
@@ -35,6 +41,7 @@ void reflecBlt::Update() {
 		}
 		if (NewLoc.Y >= SCREEN_HEIGHT && wall.DOWN) {
 			speed.Y *= -1;
+			DrawAng = (PI / 180) * (180 - Nowang);
 			Refcnt--;
 		}
 		if (NewLoc.X <= 0 && wall.LEFT) {
@@ -48,7 +55,7 @@ void reflecBlt::Update() {
 
 void reflecBlt::Draw() {
 	int size = 3;
-	DrawCircle((int)GetLocation().X, (int)GetLocation().Y, 5.f, 0xff00cc, true);
+	DrawRotaGraph((int)GetLocation().X, (int)GetLocation().Y, 1, DrawAng, image[color], true, false);
 	//DrawBox((int)GetLocation().X - size, (int)GetLocation().Y - size, (int)GetLocation().X + size, (int)GetLocation().Y + size, 0xff00cc, TRUE);
 }
 

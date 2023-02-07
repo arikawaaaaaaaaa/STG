@@ -17,5 +17,6 @@ AbstractScene* Title::Update() {
 }
 
 void Title::Draw() const{
+    DrawString(300, SCREEN_HEIGHT / 2 - 50, "TITLE", 0xffffff);
     DrawString(300, SCREEN_HEIGHT / 2, "SPACE TO START", 0xffffff);
 }

@@ -4,6 +4,12 @@
 #include"Enemy.h"
 #include"ItemBase.h"
 
+typedef enum RESULT {
+	NONE,
+	CLEAR,
+	OVER
+};
+
 class GameMain :public AbstractScene {
 private:
 	Player* player;
@@ -11,6 +17,7 @@ private:
 	ItemBase** items;
 
 	int time;
+	RESULT CheckEnd;
 
 public:
 	GameMain() {
@@ -19,6 +26,7 @@ public:
 		location.Y = 650;
 
 		time = 0;
+		CheckEnd = NONE;
 
 		float rad = 5.f;
 		player = new Player(location, rad);

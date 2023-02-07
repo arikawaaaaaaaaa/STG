@@ -12,13 +12,16 @@ struct RefWall
 class reflecBlt : public BulletsBase
 {
 private:
-	int image;
+	int image[8];
+	int color;
+	int DrawAng;
+
 	int Refcnt;
 
 	RefWall wall;
 
 public:
-	reflecBlt(Location loc, float spd, float ang, int ref, bool up, bool right, bool down, bool left);	//コンストラクタ
+	reflecBlt(Location loc, float spd, float ang, int ref, bool up, bool right, bool down, bool left, int col);	//コンストラクタ
 
 public:
 	virtual void Update() override;

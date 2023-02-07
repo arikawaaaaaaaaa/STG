@@ -54,7 +54,7 @@ void Player::Update() {
 
 	if (KeyMng::OnPress(KEY_INPUT_Z) && ShotCool <= 0) {	//’e‚ð”­ŽË‚·‚é
 		if (bullets[bulletcount] == nullptr && bulletcount < BltLimit) {	//‰æ–Êã‚Ì’e‚Ì”‚ÍÅ‘å’l–¢–žH
-			bullets[bulletcount] = new straightBlt(GetLocation(), 7, 0.f);	//^‚È‚ç’e‚ð”­ŽË‚·‚é
+			bullets[bulletcount] = new straightBlt(GetLocation(), 7, 0.f, 7);	//^‚È‚ç’e‚ð”­ŽË‚·‚é
 			ShotCool = 4;
 		}
 	}

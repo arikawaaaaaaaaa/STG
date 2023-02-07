@@ -154,7 +154,9 @@
     <ClCompile Include="bltInBlt.cpp" />
     <ClCompile Include="BulletsBase.cpp" />
     <ClCompile Include="Charabase.cpp" />
+    <ClCompile Include="Clear.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Gameover.cpp" />
     <ClCompile Include="HPotion.cpp" />
     <ClCompile Include="ItemBase.cpp" />
     <ClCompile Include="KeyMng.cpp" />
@@ -173,8 +175,10 @@
     <ClInclude Include="bltInBlt.h" />
     <ClInclude Include="BulletsBase.h" />
     <ClInclude Include="Charabase.h" />
+    <ClInclude Include="Clear.h" />
     <ClInclude Include="common.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="Gameover.h" />
     <ClInclude Include="HPotion.h" />
     <ClInclude Include="ItemBase.h" />
     <ClInclude Include="KeyMng.h" />

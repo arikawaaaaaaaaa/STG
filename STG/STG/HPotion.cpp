@@ -9,7 +9,7 @@ HPotion::HPotion(Location loc)
 
 void HPotion::Update() {
 	Location NewLoc = GetLocation();
-	NewLoc.Y += speed.Y;
+	//NewLoc.Y += speed.Y;
 	SetLocation(NewLoc);
 }
 

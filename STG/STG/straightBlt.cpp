@@ -4,8 +4,11 @@
 
 #include<math.h>
 
-straightBlt::straightBlt(Location loc, float spd, float ang) :BulletsBase(loc, 5.f, 1, Location{ 0,0 }) {
-	image = 0;
+straightBlt::straightBlt(Location loc, float spd, float ang, int col) :BulletsBase(loc, 5.f, 1, Location{ 0,0 }) {
+	LoadDivGraph("images/bullet_a.png", 8, 8, 1, 13, 13, image);
+	color = col;
+
+	DrawAng = (PI / 180) * ang;
 
 	ang += 90;
 	float angle = (PI / 180) * ang;
@@ -23,7 +26,7 @@ void straightBlt::Update(){
 
 void straightBlt::Draw() {
 	int size = 3;
-	DrawCircle((int)GetLocation().X, (int)GetLocation().Y, 5.f, 0xff00cc, true);
+	DrawRotaGraph((int)GetLocation().X, (int)GetLocation().Y, 1 , DrawAng, image[color], true, false);
 	//DrawBox((int)GetLocation().X - size, (int)GetLocation().Y - size, (int)GetLocation().X + size, (int)GetLocation().Y + size, 0xff00cc, TRUE);
 }
 

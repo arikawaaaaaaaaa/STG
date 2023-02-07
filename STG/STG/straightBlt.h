@@ -4,10 +4,13 @@
 class straightBlt : public BulletsBase
 {
 private:
-	int image;
+	int image[8];
+	int color;
+
+	float DrawAng;
 
 public:
-	straightBlt(Location loc, float spd, float ang);	//コンストラクタ
+	straightBlt(Location loc, float spd, float ang, int col);	//コンストラクタ
 
 public:
 	virtual void Update() override;

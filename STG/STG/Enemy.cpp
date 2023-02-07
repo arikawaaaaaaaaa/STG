@@ -117,14 +117,16 @@ void Enemy::Update() {
 			if (Time == 60) {
 
 				int angle = GetRand(360 - 1);
-				SircleStopShot(GetLocation(), 45, 5, angle, 30, 60, angle + 60, 2, true);
-				SircleStopShot(GetLocation(), 45, 5, angle + (360 / 40 /2) , 30, 60, angle+(360/80) - 60, 2, true);
-				angle = GetRand(360 - 1);
-				SircleStopShot(GetLocation(), 45, 10, angle, 30, 60, angle + 60, 2, true);
-				SircleStopShot(GetLocation(), 45, 10, angle + (360 / 40 / 2), 30, 60, angle + (360 / 80) - 60, 2, true);
-				angle = GetRand(360 - 1);
-				SircleStopShot(GetLocation(), 45, 15, angle, 30, 60, angle + 60, 2, true);
-				SircleStopShot(GetLocation(), 45, 15, angle + (360 / 40 / 2), 30, 60, angle + (360 / 80) - 60, 2, true);
+				//SircleStopShot(GetLocation(), 80, 5, angle, 30, 30, angle+180, 2, true);
+				SirclerefShot(GetLocation(), 2, 2, 20, true, false, true, false, 0);
+				SirclerefShot(GetLocation(), 2, 2, 40, true, false, true, false, 1);
+				SirclerefShot(GetLocation(), 2, 2, 60, true, false, true, false, 2);
+				SirclerefShot(GetLocation(), 2, 2, 80, true, false, true, false, 3);
+				SirclerefShot(GetLocation(), 2, 2, 100, true, false, true, false, 4);
+				SirclerefShot(GetLocation(), 2, 2, 120, true, false, true, false, 5);
+				SirclerefShot(GetLocation(), 2, 2, 140, true, false, true, false, 6);
+				SirclerefShot(GetLocation(), 2, 2, 160, true, false, true, false, 7);
+
 			}
 		}
 
@@ -260,14 +262,14 @@ void Enemy::GetPlayerStat(Player* player) {		//プレイヤーの座標を取得
 	PlayerY = player->GetLocation().Y;
 }
 
-void Enemy::SircleShot(Location loc, int way, int spd, float ang) {		//円形ショット(way数、弾速、角度)
+void Enemy::SircleShot(Location loc, int way, int spd, float ang, int col) {		//円形ショット(way数、弾速、角度、色)
 	int shot = 0;	//弾を発射した数
 
 	for (int bulletcount = 0; bulletcount < BltLimit && shot < way; bulletcount++) {
 
 		if (bullets[bulletcount] == nullptr && bulletcount < BltLimit) {
 
-			bullets[bulletcount] = new straightBlt(loc, spd, ang);	//弾を発射する
+			bullets[bulletcount] = new straightBlt(loc, spd, ang, col);	//弾を発射する
 
 			shot++;				//発射した数を増やす
 			ang += (360.f / way);	//角度を調整する
@@ -329,14 +331,14 @@ void Enemy::Move() {
 	
 }
 
-void Enemy::SirclerefShot(Location loc, int way, int spd, float ang, bool up, bool right, bool down, bool left) {		//円形ショット(way数、弾速、角度、各方向の壁で反射するか(それぞれ上、右、下、左方向))
+void Enemy::SirclerefShot(Location loc, int way, int spd, float ang, bool up, bool right, bool down, bool left, int col) {		//円形ショット(way数、弾速、角度、各方向の壁で反射するか(それぞれ上、右、下、左方向)、色)
 	int shot = 0;	//弾を発射した数
 
 	for (int bulletcount = 0; bulletcount < BltLimit && shot < way; bulletcount++) {
 
 		if (bullets[bulletcount] == nullptr && bulletcount < BltLimit) {
 
-			bullets[bulletcount] = new reflecBlt(loc, spd, ang, 1, up, right, down, left);	//弾を発射する
+			bullets[bulletcount] = new reflecBlt(loc, spd, ang, 1, up, right, down, left, col);	//弾を発射する
 
 			shot++;				//発射した数を増やす
 			ang += (360.f / way);	//角度を調整する
@@ -346,7 +348,7 @@ void Enemy::SirclerefShot(Location loc, int way, int spd, float ang, bool up, bo
 
 }
 
-void Enemy::HomingShot(Location loc, int spd) {		//自機狙い(弾速)
+void Enemy::HomingShot(Location loc, int spd, int col) {		//自機狙い(弾速、色)
 
 	//プレイヤー間の角度取得------
 	double tan = atan2(((double)PlayerY - loc.Y),
@@ -358,7 +360,7 @@ void Enemy::HomingShot(Location loc, int spd) {		//自機狙い(弾速)
 	for (int bulletcount = 0; bulletcount < BltLimit; bulletcount++) {
 
 		if (bullets[bulletcount] == nullptr && bulletcount < BltLimit) {
-			bullets[bulletcount] = new straightBlt(loc, spd, ang);	//弾を発射する
+			bullets[bulletcount] = new straightBlt(loc, spd, ang, col);	//弾を発射する
 			break;
 		}
 	}

@@ -1,5 +1,7 @@
 ﻿#include"Scenemng.h"
 #include"main.h"
+#include"Clear.h"
+#include"Gameover.h"
 #include"dxlib.h"
 #include"HPotion.h"
 #include"common.h"
@@ -7,7 +9,8 @@
 
 AbstractScene* GameMain::Update() {
 
-    player->Update();
+    if (!CheckEnd)player->Update();
+
     for (int i = 0; i < 10; i++) {
         if (enemy[i] == nullptr)break;
 
@@ -107,6 +110,26 @@ AbstractScene* GameMain::Update() {
     }
 
     time++;
+
+    if (!CheckEnd) {
+        int i = 0;
+        for (i = 0; i < 10; i++) {
+            if (enemy[i] != nullptr || items[i] != nullptr) break;
+        }
+        if (i == 10) {
+            CheckEnd = CLEAR;
+            time = 0;
+        }
+        if (player->LifeCheck()) {
+            CheckEnd = OVER;
+            time = 0;
+        }
+    }
+    else if (180 < time) {
+        if (CheckEnd == CLEAR)return new Clear();
+        if (CheckEnd == OVER)return new Gameover();
+    }
+
     return this;
 }
 
@@ -115,7 +138,9 @@ AbstractScene* GameMain::Update() {
 //}
 
 void GameMain::Draw() const {
-    player->Draw();
+
+    if (!player->LifeCheck())player->Draw();
+
     for (int i = 0; i < 10; i++) {
         if (enemy[i] == nullptr)break;
 
