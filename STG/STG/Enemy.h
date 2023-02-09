@@ -7,6 +7,7 @@
 struct Moveinfo {
 int pattern;	//行動パターン
 Location Point;	//目的地
+Location Speed;	//スピード
 int nextPointnum;	//次の配列番号
 int Waittime;	//待ち時間
 int  attack;	//攻撃の種類
@@ -20,6 +21,8 @@ private:
 	int point;
 
 	int shotnum;
+
+	int phase;	//進行度
 
 	//プレイヤーの座標
 	int PlayerX;
@@ -62,8 +65,8 @@ public:
 	void HomingShot(Location loc, int spd, int col);						//自機狙い(弾速、色)
 
 	 //一度止まるショット(弾速、初めの速度、止まるまでの時間、待機時間、次の速度,次の弾速)
-	void StopShot(Location loc, int Stspd, float Stang, int stop, int time, int Reang, int Respd);
+	void StopShot(Location loc, int Stspd, float Stang, int stop, int time, int Reang, int Respd, int col);
 
-	//一度止まる円形ショット(弾速、way数、色、初めの速度、止まるまでの時間、待機時間、次の角度、次の弾速、Reangをway数に応じて変化させるか)
-	void SircleStopShot(Location loc, int way, int Stspd, float Stang, int stop, int time, int Reang, int Respd, bool ChangeReang);
+	//一度止まる円形ショット(way数、初めの速度、初めの角度、止まるまでの時間、待機時間、次の角度、次の弾速、Reangをway数に応じて変化させるか、色)
+	void SircleStopShot(Location loc, int way, int Stspd, float Stang, int stop, int time, int Reang, int Respd, bool ChangeReang, int col);
 };

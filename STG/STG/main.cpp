@@ -153,6 +153,9 @@ void GameMain::Draw() const {
         items[i]->Draw();
     }
 
+    DrawBoxAA(0, 0, SCREEN_MARGIN, SCREEN_HEIGHT, 0xadd8e6, true);
+    DrawBoxAA(SCREEN_WIDTH - SCREEN_MARGIN, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0xadd8e6, true);
+
     DrawFormatString(200, 50, 0xffffff, "%d", player->GetScore());
     DrawString(200, 0, "GAMEMAIN", 0xffffff);
 }

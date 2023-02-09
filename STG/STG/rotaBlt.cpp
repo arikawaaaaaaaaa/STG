@@ -35,7 +35,7 @@ bool rotaBlt::isDeath() {
 	int width = SCREEN_WIDTH;
 
 	int margin = 20;
-	if (y < 0 - margin || y > height + margin || x < 0 - margin || x > width + margin) {
+	if (y < 0 - margin || y > height + margin || x < 0|| x > width) {
 		return true;
 	}
 	return false;

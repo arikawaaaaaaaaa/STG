@@ -3,6 +3,7 @@
 #include"player.h"
 #include"Enemy.h"
 #include"ItemBase.h"
+#include"common.h"
 
 typedef enum RESULT {
 	NONE,
@@ -22,8 +23,8 @@ private:
 public:
 	GameMain() {
 		Location location;
-		location.X = 1280 / 2;
-		location.Y = 650;
+		location.X = SCREEN_WIDTH / 2;
+		location.Y = SCREEN_HEIGHT / 2 + 200;
 
 		time = 0;
 		CheckEnd = NONE;
@@ -35,7 +36,7 @@ public:
 		for (int i = 0; i < 10; i++) {
 			enemy[i] = nullptr;
 		}
-		enemy[0] = new Enemy(Location{ 1280 / 2,720 / 2 }, 20);
+		enemy[0] = new Enemy(Location{ -100,-100 }, 20);
 
 		items = new ItemBase * [10];
 		for (int i = 0; i < 10; i++) {

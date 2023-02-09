@@ -42,10 +42,12 @@ void Enemy::inputCSV() {
 		//ÉtÉ@ÉCÉãÇ™äJÇØÇΩ
 		char line[100];
 		for (int i = 0; fgets(line, 100, fp) != NULL; i++) {
-			sscanf_s(line, "%d,%f,%f,%d,%d,%d",
+			sscanf_s(line, "%d,%f,%f,%f,%f,%d,%d,%d",
 				&moveinfo[i].pattern,
 				&moveinfo[i].Point.X,
 				&moveinfo[i].Point.Y,
+				&moveinfo[i].Speed.X,
+				&moveinfo[i].Speed.Y,
 				&moveinfo[i].nextPointnum,
 				&moveinfo[i].Waittime,
 				&moveinfo[i].attack
@@ -113,26 +115,26 @@ void Enemy::Update() {
 	int AttackTime = 0;	//çUåÇä‘äu
 	if (moveinfo[current].attack != 0) {
 		if (moveinfo[current].attack == 1) {
-			AttackTime = 60;
-			if (Time == 60) {
+			AttackTime = 30;
+			int angle = Time;
+			if (Time % AttackTime == 0) {
 
-				int angle = GetRand(360 - 1);
 				//SircleStopShot(GetLocation(), 80, 5, angle, 30, 30, angle+180, 2, true);
-				SirclerefShot(GetLocation(), 2, 2, 20, true, false, true, false, 0);
-				SirclerefShot(GetLocation(), 2, 2, 40, true, false, true, false, 1);
-				SirclerefShot(GetLocation(), 2, 2, 60, true, false, true, false, 2);
-				SirclerefShot(GetLocation(), 2, 2, 80, true, false, true, false, 3);
-				SirclerefShot(GetLocation(), 2, 2, 100, true, false, true, false, 4);
-				SirclerefShot(GetLocation(), 2, 2, 120, true, false, true, false, 5);
-				SirclerefShot(GetLocation(), 2, 2, 140, true, false, true, false, 6);
-				SirclerefShot(GetLocation(), 2, 2, 160, true, false, true, false, 7);
+				SirclerefShot(GetLocation(), 8, 2, angle + (3*Time / AttackTime), true, true, true, true, 1);
 
 			}
 		}
 
+
 		if (moveinfo[current].attack == 2) {
-			AttackTime = 15;
-			//if (Time % AttackTime == 0) SircleShot(GetLocation(), 8, 3, GetRand(360));
+			AttackTime = 20;
+			int angle = Time;
+			if (Time % AttackTime == 0) {
+
+				//SircleStopShot(GetLocation(), 80, 5, angle, 30, 30, angle+180, 2, true);
+				SircleStopShot(GetLocation(), 12, 4, angle + (Time / AttackTime), 30, 30, angle + (Time / AttackTime) + 180, 3, true, 2);
+
+			}
 		}
 	}
 
@@ -284,6 +286,7 @@ void Enemy::Move() {
 
 	Location NewLoc = GetLocation();
 
+	//ñ⁄ìIínÇ…íÖÇ¢ÇΩÇÁèIóπ
 	if ((NewLoc.X == moveinfo[current].Point.X) &&
 		(NewLoc.Y == moveinfo[current].Point.Y)) {
 		current = moveinfo[current].nextPointnum;
@@ -297,6 +300,9 @@ void Enemy::Move() {
 
 		int angbase = (int)(tan * 180 / PI);
 		float ang = (PI / 180) * angbase;
+
+		speed.X = moveinfo[current].Speed.X;
+		speed.Y = moveinfo[current].Speed.Y;
 
 		if (NewLoc.X != moveinfo[current].Point.X) {
 
@@ -366,26 +372,26 @@ void Enemy::HomingShot(Location loc, int spd, int col) {		//é©ã@ë_Ç¢(íeë¨ÅAêF)
 	}
 }
 
-void Enemy::StopShot(Location loc, int Stspd, float Stang, int stop, int time, int Reang,int Respd) {
+void Enemy::StopShot(Location loc, int Stspd, float Stang, int stop, int time, int Reang, int Respd, int col) {
 
 	for (int bulletcount = 0; bulletcount < BltLimit; bulletcount++) {
 
 		if (bullets[bulletcount] == nullptr && bulletcount < BltLimit) {
-			bullets[bulletcount] = new StopBlt(loc, Stspd, Stang, stop, time, Reang, Respd);	//íeÇî≠éÀÇ∑ÇÈ
+			bullets[bulletcount] = new StopBlt(loc, Stspd, Stang, stop, time, Reang, Respd, col);	//íeÇî≠éÀÇ∑ÇÈ
 			break;
 		}
 	}
 }
 
 //àÍìxé~Ç‹ÇÈâ~å`ÉVÉáÉbÉg(íeë¨ÅAwayêîÅAêFÅAèâÇﬂÇÃë¨ìxÅAé~Ç‹ÇÈÇ‹Ç≈ÇÃéûä‘ÅAë“ã@éûä‘ÅAéüÇÃë¨ìxÅAéüÇÃíeë¨ÅAReangÇwayêîÇ…âûÇ∂ÇƒïœâªÇ≥ÇπÇÈÇ©)
-void Enemy::SircleStopShot(Location loc, int way, int Stspd, float Stang, int stop, int time, int Reang, int Respd, bool ChangeReang) {
+void Enemy::SircleStopShot(Location loc, int way, int Stspd, float Stang, int stop, int time, int Reang, int Respd, bool ChangeReang, int col) {
 	int shot = 0;	//íeÇî≠éÀÇµÇΩêî
 
 	for (int bulletcount = 0; bulletcount < BltLimit && shot < way; bulletcount++) {
 
 		if (bullets[bulletcount] == nullptr && bulletcount < BltLimit) {
 
-			bullets[bulletcount] = new StopBlt(loc, Stspd, Stang, stop, time, Reang, Respd);	//íeÇî≠éÀÇ∑ÇÈ
+			bullets[bulletcount] = new StopBlt(loc, Stspd, Stang, stop, time, Reang, Respd, col);	//íeÇî≠éÀÇ∑ÇÈ
 
 			shot++;				//î≠éÀÇµÇΩêîÇëùÇ‚Ç∑
 			Stang += (360.f / way);	//äpìxÇí≤êÆÇ∑ÇÈ

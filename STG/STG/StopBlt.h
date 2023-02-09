@@ -4,7 +4,10 @@
 class StopBlt : public BulletsBase	//一度止まって方向転換する弾
 {
 private:
-	int image;
+	int image[8];
+	int color;
+
+	float DrawAng;
 
 	int spd;			//弾速
 	Location StSpd;	//初期速度
@@ -15,7 +18,7 @@ private:
 	int WaitTime;	//止まってから動き出すまでの時間(flame)
 
 public:
-	StopBlt(Location loc, int Stspd, float Stang, int stop, int time, int Reang, int Respd);	//コンストラクタ
+	StopBlt(Location loc, int Stspd, float Stang, int stop, int time, int Reang, int Respd, int col);	//コンストラクタ
 
 public:
 	virtual void Update() override;

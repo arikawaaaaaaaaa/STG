@@ -11,7 +11,7 @@ Location GetNewLocation(Location NewLoc);
 
 Player::Player(Location loc, float rad) :SphereColider(loc, rad) {
 	Score = 0;
-	Life = 5;
+	Life = 999;
 
 	ShotCool = 0;
 
@@ -143,9 +143,9 @@ Location GetNewLocation(Location NewLoc) {
 		//if (KeyMng::OnPress(KEY_INPUT_LEFT) || KeyMng::OnPress(KEY_INPUT_RIGHT)) NewLoc.Y -= 1.5f;
 	}
 
-	if (NewLoc.X < 0)NewLoc.X = 0.0;
+	if (NewLoc.X < SCREEN_MARGIN)NewLoc.X = SCREEN_MARGIN;
 	if (NewLoc.Y < 0)NewLoc.Y = 0.0;
-	if (NewLoc.X > 1280)NewLoc.X = 1280.0;
+	if (NewLoc.X > SCREEN_WIDTH - SCREEN_MARGIN)NewLoc.X = SCREEN_WIDTH - SCREEN_MARGIN;
 	if (NewLoc.Y > 720)NewLoc.Y = 720.0;
 
 	return NewLoc;

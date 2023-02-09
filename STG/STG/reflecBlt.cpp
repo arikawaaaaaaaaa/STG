@@ -27,7 +27,7 @@ void reflecBlt::Update() {
 	NewLoc.X -= speed.X;
 	NewLoc.Y -= speed.Y;
 
-	int Nowang = (((DrawAng) / 2 / PI) * 360);
+	float Nowang = (((DrawAng) / 2 / PI) * 360);
 
 	if (Refcnt > 0) {
 		if (NewLoc.Y <= 0 && wall.UP) {
@@ -35,8 +35,9 @@ void reflecBlt::Update() {
 			DrawAng = (PI / 180) * (180 - Nowang);
 			Refcnt--;
 		}
-		if (NewLoc.X >= SCREEN_WIDTH && wall.RIGHT) {
+		if (NewLoc.X >= SCREEN_MARGIN && wall.RIGHT) {
 			speed.X *= -1;
+			DrawAng = (PI / 180) * (180 - Nowang);
 			Refcnt--;
 		}
 		if (NewLoc.Y >= SCREEN_HEIGHT && wall.DOWN) {
@@ -44,8 +45,9 @@ void reflecBlt::Update() {
 			DrawAng = (PI / 180) * (180 - Nowang);
 			Refcnt--;
 		}
-		if (NewLoc.X <= 0 && wall.LEFT) {
+		if (NewLoc.X <= SCREEN_WIDTH - SCREEN_MARGIN && wall.LEFT) {
 			speed.X *= -1;
+			DrawAng = (PI / 180) * (180 - Nowang);
 			Refcnt--;
 		}
 	}
@@ -55,7 +57,7 @@ void reflecBlt::Update() {
 
 void reflecBlt::Draw() {
 	int size = 3;
-	DrawRotaGraph((int)GetLocation().X, (int)GetLocation().Y, 1, DrawAng, image[color], true, false);
+	DrawRotaGraph((int)GetLocation().X, (int)GetLocation().Y, 1,DrawAng, image[color], true, false);
 	//DrawBox((int)GetLocation().X - size, (int)GetLocation().Y - size, (int)GetLocation().X + size, (int)GetLocation().Y + size, 0xff00cc, TRUE);
 }
 
@@ -67,7 +69,7 @@ bool reflecBlt::isDeath() {
 	int width = SCREEN_WIDTH;
 
 	int margin = 20;
-	if (y < 0 - margin || y > height + margin || x < 0 - margin || x > width + margin) {
+	if (y < 0 - margin || y > height + margin || x < 0 || x > width) {
 		return true;
 	}
 	return false;

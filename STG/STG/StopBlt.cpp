@@ -4,8 +4,11 @@
 
 #include<math.h>
 
-StopBlt::StopBlt(Location loc, int Stspd, float Stang, int stop, int time, int Reang,int Respd) :BulletsBase(loc, 5.f, 1, Location{ 0,0 }) {
-	image = 0;
+StopBlt::StopBlt(Location loc, int Stspd, float Stang, int stop, int time, int Reang, int Respd, int col) :BulletsBase(loc, 5.f, 1, Location{ 0,0 }) {
+	LoadDivGraph("images/bullet_b.png", 8, 8, 1, 17, 17, image);
+	color = col;
+
+	DrawAng = (PI / 180) * Stang;
 
 	this->time = 0;
 	StopTime = stop;
@@ -40,6 +43,7 @@ void StopBlt::Update() {
 		speed.Y = 0;
 	}
 	else if (time == WaitTime) {	//timeˆÈã‚ÌŠÔ‘Ò‹@‚µ‚½‚ÉReang‚ğ‚à‚Æ‚É‘¬“x‚ğİ’è‚·‚é
+		DrawAng = (PI / 180) * Reang;
 		float angle = (PI / 180) * Reang;
 		speed.X = (cos(angle) == 0) ? 0 : cos(angle) * Respd;	//Šp“x‚ª90‚©270‚¾‚Æ0™Z‚µ‚Ä‚µ‚Ü‚¤
 		speed.Y = sin(angle) * Respd;
@@ -51,7 +55,7 @@ void StopBlt::Update() {
 
 void StopBlt::Draw() {
 	int size = 3;
-	DrawCircle((int)GetLocation().X, (int)GetLocation().Y, 5.f, 0xff00cc, true);
+	DrawRotaGraph((int)GetLocation().X, (int)GetLocation().Y, 1, DrawAng, image[color], true, false);
 	//DrawBox((int)GetLocation().X - size, (int)GetLocation().Y - size, (int)GetLocation().X + size, (int)GetLocation().Y + size, 0xff00cc, TRUE);
 }
 
@@ -63,7 +67,7 @@ bool StopBlt::isDeath() {
 	int width = SCREEN_WIDTH;
 
 	int margin = 255;
-	if (y < 0 - margin || y > height + margin || x < 0 - margin || x > width + margin) {
+	if (y < 0 - margin || y > height + margin || x < 0 || x > width) {
 		return true;
 	}
 	return false;

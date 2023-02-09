@@ -14,7 +14,7 @@ class reflecBlt : public BulletsBase
 private:
 	int image[8];
 	int color;
-	int DrawAng;
+	float DrawAng;
 
 	int Refcnt;
 
