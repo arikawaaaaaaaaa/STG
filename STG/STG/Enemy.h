@@ -50,6 +50,9 @@ public:
 	int Getpoint();
 	void DeleteBullet(int bulletCnt);	//’e‚ğÁ‚·
 
+	Location GetLoc() { return GetLocation(); }
+	int GetLife() { return hp; }
+
 	//UŒ‚ƒpƒ^[ƒ““Ç‚İ‚İ
 	void inputCSV();
 

@@ -5,7 +5,7 @@
 #include<math.h>
 
 straightBlt::straightBlt(Location loc, float spd, float ang, int col) :BulletsBase(loc, 5.f, 1, Location{ 0,0 }) {
-	LoadDivGraph("images/bullet_a.png", 8, 8, 1, 13, 13, image);
+	LoadDivGraph("images/bullet_a.png", 8, 8, 1, 16, 16, image);
 	color = col;
 
 	DrawAng = (PI / 180) * ang;

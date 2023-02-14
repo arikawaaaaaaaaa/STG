@@ -5,7 +5,7 @@
 #include<math.h>
 
 reflecBlt::reflecBlt(Location loc, float spd, float ang, int ref, bool up, bool right, bool down, bool left, int col) :BulletsBase(loc, 5.f, 1, Location{ 0,0 }) {
-	LoadDivGraph("images/bullet_c.png", 8, 8, 1, 12, 14, image);
+	LoadDivGraph("images/bullet_c.png", 8, 8, 1, 14, 16, image);
 	color = col;
 
 	DrawAng = (PI / 180) * ang;
@@ -35,7 +35,7 @@ void reflecBlt::Update() {
 			DrawAng = (PI / 180) * (180 - Nowang);
 			Refcnt--;
 		}
-		if (NewLoc.X >= SCREEN_MARGIN && wall.RIGHT) {
+		if (NewLoc.X >= SCREEN_WIDTH - SCREEN_MARGIN && wall.RIGHT) {
 			speed.X *= -1;
 			DrawAng = (PI / 180) * (180 - Nowang);
 			Refcnt--;
@@ -45,7 +45,7 @@ void reflecBlt::Update() {
 			DrawAng = (PI / 180) * (180 - Nowang);
 			Refcnt--;
 		}
-		if (NewLoc.X <= SCREEN_WIDTH - SCREEN_MARGIN && wall.LEFT) {
+		if (NewLoc.X <= SCREEN_MARGIN && wall.LEFT) {
 			speed.X *= -1;
 			DrawAng = (PI / 180) * (180 - Nowang);
 			Refcnt--;

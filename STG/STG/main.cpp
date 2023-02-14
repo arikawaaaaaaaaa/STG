@@ -25,11 +25,12 @@ AbstractScene* GameMain::Update() {
 
     //弾と敵の当たり
     BulletsBase** bullets = player->GetBullets();
-    for (int bulletcnt = 0; bulletcnt < BltLimit; bulletcnt++) {
-        if (bullets[bulletcnt] == nullptr)break;
+    for (int enecnt = 0; enecnt < 10; enecnt++) {
         
-        for (int enecnt = 0; enecnt < 10; enecnt++) {
+        for (int bulletcnt = 0; bulletcnt < BltLimit; bulletcnt++) {
+
             if (enemy[enecnt] == nullptr)break;
+            if (bullets[bulletcnt] == nullptr)break;
 
             if (bullets[bulletcnt]->HitSphere(enemy[enecnt])) {
                 //弾が命中
@@ -49,18 +50,17 @@ AbstractScene* GameMain::Update() {
                         }
                     }
 
-                    delete enemy[enecnt];		//出た弾を消す
+                    delete enemy[enecnt];		//敵を消す
                     enemy[enecnt] = nullptr;
 
 
-                    for (int i = enecnt + 1; i < 10; i++) {	//弾の配列にできた空白を埋める
+                    for (int i = enecnt + 1; i < 10; i++) {	//敵の配列にできた空白を埋める
 
                         if (enemy[i] == nullptr) { break; }
 
                         enemy[i - 1] = enemy[i];
                         enemy[i] = nullptr;
                     }
-                    enecnt--;
                 }
             }
         }
@@ -158,4 +158,10 @@ void GameMain::Draw() const {
 
     DrawFormatString(200, 50, 0xffffff, "%d", player->GetScore());
     DrawString(200, 0, "GAMEMAIN", 0xffffff);
+
+    for (int i = 0; i < 10; i++) {
+        if (enemy[i] == nullptr)break;
+
+        DrawFormatString(200, 200 + 50 * i, 0xff0000, "%d", enemy[i]->GetLife());
+    }
 }

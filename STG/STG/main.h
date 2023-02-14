@@ -37,6 +37,7 @@ public:
 			enemy[i] = nullptr;
 		}
 		enemy[0] = new Enemy(Location{ -100,-100 }, 20);
+		enemy[1] = new Enemy(Location{ 100,100 }, 20);
 
 		items = new ItemBase * [10];
 		for (int i = 0; i < 10; i++) {
