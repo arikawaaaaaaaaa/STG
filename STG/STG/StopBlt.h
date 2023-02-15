@@ -18,7 +18,7 @@ private:
 	int WaitTime;	//止まってから動き出すまでの時間(flame)
 
 public:
-	StopBlt(Location loc, int Stspd, float Stang, int stop, int time, int Reang, int Respd, int col);	//コンストラクタ
+	StopBlt(Location loc, int Stspd, float Stang, int stop, int time, int Reang, int Respd, int col, int img[8]);	//コンストラクタ
 
 public:
 	virtual void Update() override;

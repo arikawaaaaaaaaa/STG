@@ -13,6 +13,8 @@ private:
 
 	int ShotCool;
 
+	int bullet[8];
+
 public:
 	Player(Location loc, float rad);
 	//~Player();

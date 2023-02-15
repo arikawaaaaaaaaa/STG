@@ -15,6 +15,8 @@ Player::Player(Location loc, float rad) :SphereColider(loc, rad) {
 
 	ShotCool = 0;
 
+	LoadDivGraph("images/bullet_c.png", 8, 8, 1, 14, 16, bullet);
+
 	//image‰Šú‰»
 	//speed‰Šú‰»
 
@@ -54,7 +56,7 @@ void Player::Update() {
 
 	if (KeyMng::OnPress(KEY_INPUT_Z) && ShotCool <= 0) {	//’e‚ğ”­Ë‚·‚é
 		if (bullets[bulletcount] == nullptr && bulletcount < BltLimit) {	//‰æ–Êã‚Ì’e‚Ì”‚ÍÅ‘å’l–¢–H
-			bullets[bulletcount] = new straightBlt(GetLocation(), 7, 0.f, 7);	//^‚È‚ç’e‚ğ”­Ë‚·‚é
+			bullets[bulletcount] = new straightBlt(GetLocation(), 7, 0.f, 7, bullet);	//^‚È‚ç’e‚ğ”­Ë‚·‚é
 			ShotCool = 4;
 		}
 	}

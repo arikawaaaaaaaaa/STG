@@ -4,8 +4,13 @@
 
 #include<math.h>
 
-straightBlt::straightBlt(Location loc, float spd, float ang, int col) :BulletsBase(loc, 5.f, 1, Location{ 0,0 }) {
-	LoadDivGraph("images/bullet_a.png", 8, 8, 1, 16, 16, image);
+straightBlt::straightBlt(Location loc, float spd, float ang, int col,int img[8]) :BulletsBase(loc, 5.f, 1, Location{ 0,0 }) {
+
+	for (int i = 0; i < 8; i++)
+	{
+		image[i] = img[i];
+	}
+
 	color = col;
 
 	DrawAng = (PI / 180) * ang;

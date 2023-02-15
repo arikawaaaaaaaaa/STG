@@ -4,8 +4,12 @@
 
 #include<math.h>
 
-reflecBlt::reflecBlt(Location loc, float spd, float ang, int ref, bool up, bool right, bool down, bool left, int col) :BulletsBase(loc, 5.f, 1, Location{ 0,0 }) {
-	LoadDivGraph("images/bullet_c.png", 8, 8, 1, 14, 16, image);
+reflecBlt::reflecBlt(Location loc, float spd, float ang, int ref, bool up, bool right, bool down, bool left, int col, int img[8]) :BulletsBase(loc, 5.f, 1, Location{ 0,0 }) {
+	
+	for (int i = 0; i < 8; i++)
+	{
+		image[i] = img[i];
+	}
 	color = col;
 
 	DrawAng = (PI / 180) * ang;

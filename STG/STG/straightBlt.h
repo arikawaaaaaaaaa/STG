@@ -10,7 +10,7 @@ private:
 	float DrawAng;
 
 public:
-	straightBlt(Location loc, float spd, float ang, int col);	//コンストラクタ
+	straightBlt(Location loc, float spd, float ang, int col, int img[8]);	//コンストラクタ
 
 public:
 	virtual void Update() override;

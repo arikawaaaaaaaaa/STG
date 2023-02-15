@@ -67,10 +67,17 @@ Enemy::Enemy (Location loc, float rad) : SphereColider(loc, rad) {
 
 	shotnum = 0;
 
+	phase = 0;
+
 	PlayerX = 0;
 	PlayerY = 0;
 
 	Time = 0;
+	angle = 0;
+
+	LoadDivGraph("images/bullet_a.png", 8, 8, 1, 16, 16, bullet_A);
+	LoadDivGraph("images/bullet_b.png", 8, 8, 1, 16, 16, bullet_B);
+	LoadDivGraph("images/bullet_c.png", 8, 8, 1, 16, 14, bullet_C);
 
 	//pointèâä˙âª
 	//hpèâä˙âª
@@ -114,31 +121,41 @@ void Enemy::Update() {
 
 	int AttackTime = 0;	//çUåÇä‘äu
 	if (moveinfo[current].attack != 0) {
-		if (moveinfo[current].attack == 1) {
-			AttackTime = 30;
-			int angle = Time;
-			if (Time % AttackTime == 0) {
+		switch (phase)
+		{
+		case 0:
+			if (moveinfo[current].attack == 1) {
+				AttackTime = 30;
+				angle = GetRand(360);
+				if (Time % AttackTime == 0) {
 
-				//SircleStopShot(GetLocation(), 80, 5, angle, 30, 30, angle+180, 2, true);
-				SirclerefShot(GetLocation(), 8, 2, angle + (3*Time / AttackTime), true, true, true, true, 1);
+					SircleShot(GetLocation(), 32, 4.5, angle + Time / AttackTime * 10, 0);
 
+					HomingShot(GetLocation(), 5, 0, 1);
+					HomingShot(GetLocation(), 4.8, 2, 1);
+					HomingShot(GetLocation(), 4.8, -2, 1);
+					HomingShot(GetLocation(), 4.6, 3, 1);
+					HomingShot(GetLocation(), 4.6, -3, 1);
+
+				}
 			}
-		}
 
 
-		if (moveinfo[current].attack == 2) {
-			AttackTime = 20;
-			int angle = Time;
-			if (Time % AttackTime == 0) {
+			if (moveinfo[current].attack == 2) {
+				AttackTime = 20;
+				angle = Time;
+				if (Time % AttackTime == 0) {
 
-				//SircleStopShot(GetLocation(), 80, 5, angle, 30, 30, angle+180, 2, true);
-				SircleStopShot(GetLocation(), 12, 4, angle + (Time / AttackTime), 30, 30, angle + (Time / AttackTime) + 180, 3, true, 2);
+					//SircleStopShot(GetLocation(), 80, 5, angle, 30, 30, angle+180, 2, true);
+					SircleStopShot(GetLocation(), 12, 4, angle + (Time / AttackTime), 60, 0, angle + (Time / AttackTime) + 180, 3, true, 2);
 
+				}
 			}
+			break;
 		}
 	}
 
-
+	//íeä«óù
 	int bulletcount;
 	for (bulletcount = 0; bulletcount < BltLimit; bulletcount++) {
 
@@ -154,37 +171,6 @@ void Enemy::Update() {
 	}
 
 	Time++;
-
-
-	//if (bullets[bulletcount] == nullptr && bulletcount < BltLimit) {	//âÊñ è„ÇÃíeÇÃêîÇÕç≈ëÂílñ¢ñûÅH
-	//	switch (hp)
-	//	{
-	//	case 10:
-	//		AttackTime = 10;
-	//		if (Time % AttackTime == 0) SircleShot(GetLocation(), 8, 3, GetRand(360));
-	//		break;
-
-	//	case 9:
-	//		AttackTime = 5;
-	//		if (Time % AttackTime == 0) HomingShot(GetLocation(), 3);
-	//		break;
-
-	//	case 8:
-	//		AttackTime = 120;
-	//		if (Time % AttackTime == 0) SirclerefShot({ GetRand(160) + GetLocation().X - 80,GetRand(160) + GetLocation().Y - 80 }, 36, 2, GetRand(360), true, true, false, true);
-	//		break;
-
-	//	case 7:
-	//		AttackTime = 3;
-	//		if (Time % AttackTime == 0) SircleShot(GetLocation(), 6, 2, shotnum);
-	//		if (Time % 600 < 300)shotnum += Time % 300 / 8;
-	//		else shotnum -= (300 - Time % 300) / 8;
-	//		break;
-
-	//	default:
-	//		break;
-	//	}
-	//}
 }
 
 void Enemy::Draw() {	//ï`âÊ
@@ -264,14 +250,14 @@ void Enemy::GetPlayerStat(Player* player) {		//ÉvÉåÉCÉÑÅ[ÇÃç¿ïWÇéÊìæ
 	PlayerY = player->GetLocation().Y;
 }
 
-void Enemy::SircleShot(Location loc, int way, int spd, float ang, int col) {		//â~å`ÉVÉáÉbÉg(wayêîÅAíeë¨ÅAäpìxÅAêF)
+void Enemy::SircleShot(Location loc, int way, float spd, float ang, int col) {		//â~å`ÉVÉáÉbÉg(wayêîÅAíeë¨ÅAäpìxÅAêF)
 	int shot = 0;	//íeÇî≠éÀÇµÇΩêî
 
 	for (int bulletcount = 0; bulletcount < BltLimit && shot < way; bulletcount++) {
 
 		if (bullets[bulletcount] == nullptr && bulletcount < BltLimit) {
 
-			bullets[bulletcount] = new straightBlt(loc, spd, ang, col);	//íeÇî≠éÀÇ∑ÇÈ
+			bullets[bulletcount] = new straightBlt(loc, spd, ang, col, bullet_A);	//íeÇî≠éÀÇ∑ÇÈ
 
 			shot++;				//î≠éÀÇµÇΩêîÇëùÇ‚Ç∑
 			ang += (360.f / way);	//äpìxÇí≤êÆÇ∑ÇÈ
@@ -344,7 +330,7 @@ void Enemy::SirclerefShot(Location loc, int way, int spd, float ang, bool up, bo
 
 		if (bullets[bulletcount] == nullptr && bulletcount < BltLimit) {
 
-			bullets[bulletcount] = new reflecBlt(loc, spd, ang, 1, up, right, down, left, col);	//íeÇî≠éÀÇ∑ÇÈ
+			bullets[bulletcount] = new reflecBlt(loc, spd, ang, 1, up, right, down, left, col, bullet_C);	//íeÇî≠éÀÇ∑ÇÈ
 
 			shot++;				//î≠éÀÇµÇΩêîÇëùÇ‚Ç∑
 			ang += (360.f / way);	//äpìxÇí≤êÆÇ∑ÇÈ
@@ -354,19 +340,19 @@ void Enemy::SirclerefShot(Location loc, int way, int spd, float ang, bool up, bo
 
 }
 
-void Enemy::HomingShot(Location loc, int spd, int col) {		//é©ã@ë_Ç¢(íeë¨ÅAêF)
+void Enemy::HomingShot(Location loc, float spd, int ang, int col) {		//é©ã@ë_Ç¢(íeë¨ÅAÇ∏ÇÁÇµÅAêF)
 
 	//ÉvÉåÉCÉÑÅ[ä‘ÇÃäpìxéÊìæ------
 	double tan = atan2(((double)PlayerY - loc.Y),
 		(double)PlayerX - loc.X);
 
-	int ang = (int)(tan * 180 / PI) + 90;
+	int angle = (int)(tan * 180 / PI) + 90;
 	//----------------------------
 
 	for (int bulletcount = 0; bulletcount < BltLimit; bulletcount++) {
 
 		if (bullets[bulletcount] == nullptr && bulletcount < BltLimit) {
-			bullets[bulletcount] = new straightBlt(loc, spd, ang, col);	//íeÇî≠éÀÇ∑ÇÈ
+			bullets[bulletcount] = new straightBlt(loc, spd, angle + ang, col, bullet_A);	//íeÇî≠éÀÇ∑ÇÈ
 			break;
 		}
 	}
@@ -377,7 +363,7 @@ void Enemy::StopShot(Location loc, int Stspd, float Stang, int stop, int time, i
 	for (int bulletcount = 0; bulletcount < BltLimit; bulletcount++) {
 
 		if (bullets[bulletcount] == nullptr && bulletcount < BltLimit) {
-			bullets[bulletcount] = new StopBlt(loc, Stspd, Stang, stop, time, Reang, Respd, col);	//íeÇî≠éÀÇ∑ÇÈ
+			bullets[bulletcount] = new StopBlt(loc, Stspd, Stang, stop, time, Reang, Respd, col, bullet_B);	//íeÇî≠éÀÇ∑ÇÈ
 			break;
 		}
 	}
@@ -391,7 +377,7 @@ void Enemy::SircleStopShot(Location loc, int way, int Stspd, float Stang, int st
 
 		if (bullets[bulletcount] == nullptr && bulletcount < BltLimit) {
 
-			bullets[bulletcount] = new StopBlt(loc, Stspd, Stang, stop, time, Reang, Respd, col);	//íeÇî≠éÀÇ∑ÇÈ
+			bullets[bulletcount] = new StopBlt(loc, Stspd, Stang, stop, time, Reang, Respd, col, bullet_B);	//íeÇî≠éÀÇ∑ÇÈ
 
 			shot++;				//î≠éÀÇµÇΩêîÇëùÇ‚Ç∑
 			Stang += (360.f / way);	//äpìxÇí≤êÆÇ∑ÇÈ

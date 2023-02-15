@@ -4,8 +4,12 @@
 
 #include<math.h>
 
-StopBlt::StopBlt(Location loc, int Stspd, float Stang, int stop, int time, int Reang, int Respd, int col) :BulletsBase(loc, 5.f, 1, Location{ 0,0 }) {
-	LoadDivGraph("images/bullet_b.png", 8, 8, 1, 16, 16, image);
+StopBlt::StopBlt(Location loc, int Stspd, float Stang, int stop, int time, int Reang, int Respd, int col, int img[8]) :BulletsBase(loc, 5.f, 1, Location{ 0,0 }) {
+
+	for (int i = 0; i < 8; i++)
+	{
+		image[i] = img[i];
+	}
 	color = col;
 
 	DrawAng = (PI / 180) * Stang;

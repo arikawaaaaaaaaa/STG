@@ -14,6 +14,8 @@ public:
     virtual void Update();
     virtual void Draw();
 
+    bool IsDeath();
+
     int GetHealP() { return HealP; }
 };
 

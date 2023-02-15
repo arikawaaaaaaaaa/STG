@@ -107,6 +107,21 @@ AbstractScene* GameMain::Update() {
             }
             itemcnt--;
         }
+        else if (items[itemcnt]->IsDeath()) {
+
+            delete items[itemcnt];		//アイテムを消す
+            items[itemcnt] = nullptr;
+
+
+            for (int i = itemcnt + 1; i < 10; i++) {	//アイテムの配列にできた空白を埋める
+
+                if (items[i] == nullptr) { break; }
+
+                items[i - 1] = items[i];
+                items[i] = nullptr;
+            }
+            itemcnt--;
+        }
     }
 
     time++;

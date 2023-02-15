@@ -18,6 +18,7 @@ public:
 public:
     virtual void Update() = 0;
     virtual void Draw() = 0;
+    virtual bool IsDeath() = 0;
     E_ITEMTYPE GetType() { return type; }
 
 };
