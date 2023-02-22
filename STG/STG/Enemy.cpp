@@ -12,19 +12,27 @@
 void Enemy::inputCSV() {
 	FILE* fp; //FILE型構造体
 	errno_t error;
-
-	switch (phase)
+	switch (Stage)
 	{
-	case 0:
-		error = fopen_s(&fp, "data/moveinfo.csv", "r");
-		break;
-
 	case 1:
-		error = fopen_s(&fp, "data/moveinfo_b.csv", "r");
-		break;
+		switch (phase)
+		{
+		case 0:
+			error = fopen_s(&fp, "data/moveinfo.csv", "r");
+			break;
 
-	case 2:
-		error = fopen_s(&fp, "data/moveinfo_c.csv", "r");
+		case 1:
+			error = fopen_s(&fp, "data/moveinfo_b.csv", "r");
+			break;
+
+		case 2:
+			error = fopen_s(&fp, "data/moveinfo_c.csv", "r");
+			break;
+
+		default:
+			error = fopen_s(&fp, "data/moveinfo.csv", "r");
+			break;
+		}
 		break;
 
 	default:
@@ -57,11 +65,13 @@ void Enemy::inputCSV() {
 	fclose(fp);	//ファイルを閉じる
 }
 
-Enemy::Enemy (Location loc, float rad) : SphereColider(loc, rad) {
+Enemy::Enemy(Location loc, float rad, int stage) : SphereColider(loc, rad) {
 
 	point = 10;
 	hp = 100;
 	maxhp = hp;
+
+	Stage = stage;
 
 	shotnum = 0;
 

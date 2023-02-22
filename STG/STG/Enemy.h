@@ -20,6 +20,8 @@ private:
 	int maxhp;
 	int point;
 
+	int Stage;
+
 	//‰æ‘œ
 	int image[2];
 
@@ -50,7 +52,7 @@ private:
 	int waittime;
 
 public:
-	Enemy(Location loc, float rad);
+	Enemy(Location loc, float rad, int stage);
 
 public:
 	virtual void Update() override;

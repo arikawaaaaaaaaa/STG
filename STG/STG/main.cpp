@@ -132,9 +132,34 @@ AbstractScene* GameMain::Update() {
             if (enemy[i] != nullptr || items[i] != nullptr) break;
         }
         if (i == 10) {
-            CheckEnd = CLEAR;
+            ExEnemy = false;
+            if (Stage > 2) {
+                CheckEnd = CLEAR;
+            }
+
+            else
+            {
+                if (Changeflg == 0)
+                {
+                    if (SceneChange < 0) {
+                        Changeflg = 1;
+                        SceneChange = 0;
+                        Stage++;
+                    }
+                    else SceneChange -= 2;
+                }
+                else if (300 < ++SceneChange) {
+                    enemy[0] = new Enemy(Location{ -100,-100 }, 20, Stage);
+                    ExEnemy = true;
+                    Changeflg = 0;
+                }
+            }
             time = 0;
         }
+        else {
+            ExEnemy = true;
+        }
+
         if (player->LifeCheck()) {
             CheckEnd = OVER;
             time = 0;
@@ -154,8 +179,10 @@ AbstractScene* GameMain::Update() {
 
 void GameMain::Draw() const {
 
-    DrawGraph(0, 0, image, false);
+    if (!ExEnemy) SetDrawBright(SceneChange * 2, SceneChange * 2, SceneChange * 2);
+    DrawGraph(0, 0, image[Stage - 1], false);
 
+    SetDrawBright(255, 255, 255);
     //プレイヤーの描画
     if (!player->LifeCheck())player->Draw();
 

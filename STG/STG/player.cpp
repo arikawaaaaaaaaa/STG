@@ -11,7 +11,7 @@ Location GetNewLocation(Location NewLoc);
 
 Player::Player(Location loc, float rad) :SphereColider(loc, rad) {
 	Score = 0;
-	Life = 10;
+	Life = 99;
 	MaxLife = Life;
 
 	ShotCool = 0;

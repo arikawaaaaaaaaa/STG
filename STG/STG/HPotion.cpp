@@ -3,9 +3,9 @@
 #include"DxLib.h"
 
 HPotion::HPotion(Location loc)
-	: ItemBase(loc, 5.f, E_ITEMTYPE::HPotion, Location{ 0,0.5f }), HealP(3)
+	: ItemBase(loc, 10.f, E_ITEMTYPE::HPotion, Location{ 0,0.5f }), HealP(3)
 {
-
+	image = LoadGraph("images/Heart.png");
 }
 
 void HPotion::Update() {
@@ -15,7 +15,7 @@ void HPotion::Update() {
 }
 
 void HPotion::Draw() {
-	DrawCircle(GetLocation().X, GetLocation().Y, GetRadius(), 0xffffff);
+	DrawRotaGraph(GetLocation().X, GetLocation().Y, 1, 0, image, true, false, false);
 }
 
 bool HPotion::IsDeath() {

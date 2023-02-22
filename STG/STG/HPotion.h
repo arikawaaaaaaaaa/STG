@@ -5,6 +5,7 @@ class HPotion :
 {
 private:
     int HealP;
+    int image;
 
 public:
     HPotion(Location loc);

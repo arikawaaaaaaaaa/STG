@@ -17,7 +17,12 @@ private:
 	Enemy** enemy;
 	ItemBase** items;
 
-	int image;
+    bool ExEnemy;       //敵はいる？
+    int Stage;          //現在ステージ
+    int SceneChange;    //背景描画
+    int Changeflg;
+
+	int image[2];
 
 	int time;
 	RESULT CheckEnd;
@@ -27,6 +32,11 @@ public:
         Location location;
         location.X = SCREEN_WIDTH / 2;
         location.Y = SCREEN_HEIGHT / 2 + 200;
+
+        Stage = 0;
+        ExEnemy = false;
+        SceneChange = 0;
+        Changeflg = 0;
 
         time = 0;
         CheckEnd = NONE;
@@ -38,14 +48,14 @@ public:
         for (int i = 0; i < 10; i++) {
             enemy[i] = nullptr;
         }
-        enemy[0] = new Enemy(Location{ -100,-100 }, 20);
 
         items = new ItemBase * [10];
         for (int i = 0; i < 10; i++) {
             items[i] = nullptr;
         }
 
-        image = LoadGraph("images/BackGround.png");
+        image[0] = LoadGraph("images/BackGround.png");
+        image[1] = LoadGraph("images/back_b.png");
     }
 
 
