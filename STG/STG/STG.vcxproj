@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="bigBlt.cpp" />
     <ClCompile Include="bltInBlt.cpp" />
     <ClCompile Include="BulletsBase.cpp" />
     <ClCompile Include="Charabase.cpp" />
@@ -172,6 +173,7 @@
     <ClCompile Include="Title.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="bigBlt.h" />
     <ClInclude Include="bltInBlt.h" />
     <ClInclude Include="BulletsBase.h" />
     <ClInclude Include="Charabase.h" />

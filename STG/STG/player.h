@@ -9,6 +9,7 @@ class Player : public CharaBase, public SphereColider{
 private:
 
 	int Life;
+	int MaxLife;
 	int Score;
 
 	int ShotCool;
@@ -30,5 +31,6 @@ public:
 	int GetScore();
 	void AddScore(int add) { if (add > 0) Score += add; }
 
-
+	int GetLife() { return Life; }
+	int GetMaxLife() { return MaxLife; }
 };

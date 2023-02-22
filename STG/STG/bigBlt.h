@@ -1,7 +1,7 @@
 #pragma once
 #include "BulletsBase.h"
 
-class reflecBlt : public BulletsBase
+class bigBlt : public BulletsBase
 {
 private:
 	int image[8];
@@ -13,12 +13,11 @@ private:
 	RefWall wall;
 
 public:
-	reflecBlt(Location loc, float spd, float ang, int ref, bool up, bool right, bool down, bool left, int col, int img[8]);	//コンストラクタ
+	bigBlt(Location loc, float spd, float ang, int ref, bool up, bool right, bool down, bool left, int col, int img[8]);	//コンストラクタ
 
 public:
 	virtual void Update() override;
 	virtual void Draw() override;
 	virtual bool isDeath() override;
 };
-
 

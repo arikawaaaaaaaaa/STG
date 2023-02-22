@@ -154,20 +154,26 @@ AbstractScene* GameMain::Update() {
 
 void GameMain::Draw() const {
 
+    DrawGraph(0, 0, image, false);
+
+    //プレイヤーの描画
     if (!player->LifeCheck())player->Draw();
 
+    //敵の描画
     for (int i = 0; i < 10; i++) {
         if (enemy[i] == nullptr)break;
 
         enemy[i]->Draw();
     }
 
+    //アイテムの描画
     for (int i = 0; i < 10; i++) {
         if (items[i] == nullptr)break;
 
         items[i]->Draw();
     }
 
+    //ゲーム画面の描画
     DrawBoxAA(0, 0, SCREEN_MARGIN, SCREEN_HEIGHT, 0xadd8e6, true);
     DrawBoxAA(SCREEN_WIDTH - SCREEN_MARGIN, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0xadd8e6, true);
 
@@ -178,5 +184,26 @@ void GameMain::Draw() const {
         if (enemy[i] == nullptr)break;
 
         DrawFormatString(200, 200 + 50 * i, 0xff0000, "%d", enemy[i]->GetLife());
+    }
+
+    //体力ゲージ表示
+    //赤いとこ
+    DrawBoxAA(SCREEN_WIDTH - SCREEN_MARGIN + 50, 100,
+              SCREEN_WIDTH - SCREEN_MARGIN + 80, SCREEN_HEIGHT - 100, 0xff0000, true);
+
+    //緑のとこ
+    if (player->GetLife() < player->GetMaxLife()) {
+    DrawBoxAA(SCREEN_WIDTH - SCREEN_MARGIN + 50, SCREEN_HEIGHT - 100 - (520 / player->GetMaxLife() * (player->GetLife())), 
+              SCREEN_WIDTH - SCREEN_MARGIN + 80, SCREEN_HEIGHT - 100, 0x67ff00, true);
+    }
+    else {
+        DrawBoxAA(SCREEN_WIDTH - SCREEN_MARGIN + 50, SCREEN_HEIGHT - 100 - 520,
+                  SCREEN_WIDTH - SCREEN_MARGIN + 80, SCREEN_HEIGHT - 100, 0x67ff00, true);
+    }
+
+    //体力最大値以上の表示
+    if (player->GetMaxLife() < player->GetLife()){
+        DrawBoxAA(SCREEN_WIDTH - SCREEN_MARGIN + 50, SCREEN_HEIGHT - 100 - (520 / player->GetMaxLife() * (player->GetLife() - player->GetMaxLife())), 
+            SCREEN_WIDTH - SCREEN_MARGIN + 80, SCREEN_HEIGHT - 100, 0x00ffff, true);
     }
 }

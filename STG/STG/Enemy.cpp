@@ -3,36 +3,34 @@
 #include "straightBlt.h"
 #include "reflecBlt.h"
 #include "StopBlt.h"
+#include "bigBlt.h"
 #include "KeyMng.h"
 #include"common.h"
 
 #include<math.h>
 
-//マップ端 X 1280 Y 720
-//
-//Moveinfo moveinfo[] = {
-//	{0, 640,150,1,  0,0},
-//	{0, 490,200,2,  0,2},
-//	{1,   0,  0,3,180,1},
-//	{0, 640,250,4,  0,2},
-//	{1,   0,  0,5,180,1},
-//	{0, 740,200,6,  0,2},
-//	{1,   0,  0,7,180,1},
-//	{0, 640,150,8,  0,2},
-//	{1,   0,  0,1,180,1},
-//};
-
-
-//Location locations[3] = {
-//	{640,150},
-//	{1200,150},
-//	{80,150},
-//};
-
 void Enemy::inputCSV() {
 	FILE* fp; //FILE型構造体
 	errno_t error;
-	error = fopen_s(&fp, "data/moveinfo.csv", "r");
+
+	switch (phase)
+	{
+	case 0:
+		error = fopen_s(&fp, "data/moveinfo.csv", "r");
+		break;
+
+	case 1:
+		error = fopen_s(&fp, "data/moveinfo_b.csv", "r");
+		break;
+
+	case 2:
+		error = fopen_s(&fp, "data/moveinfo_c.csv", "r");
+		break;
+
+	default:
+		error = fopen_s(&fp, "data/moveinfo.csv", "r");
+		break;
+	}
 
 	if (error != 0) {
 		//ファイルが開けていない
@@ -75,14 +73,18 @@ Enemy::Enemy (Location loc, float rad) : SphereColider(loc, rad) {
 	Time = 0;
 	angle = 0;
 
+	LoadDivGraph("images/enemy_a.png", 2, 2, 1, 64, 64, image);
+
 	LoadDivGraph("images/bullet_a.png", 8, 8, 1, 16, 16, bullet_A);
 	LoadDivGraph("images/bullet_b.png", 8, 8, 1, 16, 16, bullet_B);
-	LoadDivGraph("images/bullet_c.png", 8, 8, 1, 16, 14, bullet_C);
+	LoadDivGraph("images/bullet_c.png", 8, 8, 1, 14, 16, bullet_C);
+	LoadDivGraph("images/bullet_d.png", 8, 4, 2, 62, 62, bullet_D);
 
 	//point初期化
 	//hp初期化
 
 	speed = Location{ 3,3 };
+	Old = GetLocation();
 
 	bullets = new BulletsBase* [BltLimit];
 	for (int i = 0; i < BltLimit; i++) {
@@ -97,11 +99,8 @@ Enemy::Enemy (Location loc, float rad) : SphereColider(loc, rad) {
 }
 
 void Enemy::Update() {
-	//Location NewLoc = GetLocation();
-	////NewLoc.Y += speed.Y;
-	//SetLocation(NewLoc);
 
-	//Move();
+	Old = GetLocation();
 
 	switch (moveinfo[current].pattern) {
 	case 0:
@@ -125,17 +124,10 @@ void Enemy::Update() {
 		{
 		case 0:
 			if (moveinfo[current].attack == 1) {
-				AttackTime = 30;
-				angle = GetRand(360);
+				AttackTime = 20;
+				angle = Time;
 				if (Time % AttackTime == 0) {
-
-					SircleShot(GetLocation(), 32, 4.5, angle + Time / AttackTime * 10, 0);
-
-					HomingShot(GetLocation(), 5, 0, 1);
-					HomingShot(GetLocation(), 4.8, 2, 1);
-					HomingShot(GetLocation(), 4.8, -2, 1);
-					HomingShot(GetLocation(), 4.6, 3, 1);
-					HomingShot(GetLocation(), 4.6, -3, 1);
+					CircleShot(GetLocation(), 12, 3, angle - (Time / AttackTime), 2);
 
 				}
 			}
@@ -146,9 +138,39 @@ void Enemy::Update() {
 				angle = Time;
 				if (Time % AttackTime == 0) {
 
-					//SircleStopShot(GetLocation(), 80, 5, angle, 30, 30, angle+180, 2, true);
-					SircleStopShot(GetLocation(), 12, 4, angle + (Time / AttackTime), 60, 0, angle + (Time / AttackTime) + 180, 3, true, 2);
+					//CircleStopShot(GetLocation(), 80, 5, angle, 30, 30, angle+180, 2, true);
+					CircleShot(GetLocation(), 12, 3, -angle - (Time / AttackTime), 2);
 
+				}
+			}
+			break;
+
+		case 1:
+			if (moveinfo[current].attack == 1) {
+				int Xloc = 100;
+				CreateShot({ GetLocation().X + GetRand(Xloc * 2) - Xloc,GetLocation().Y + GetRand(Xloc * 2) - Xloc },
+					GetRand(3) + 1 +Time / 15, 0, 1);
+				CreateShot({ GetLocation().X + GetRand(Xloc * 2) - Xloc,GetLocation().Y + GetRand(Xloc * 2) - Xloc },
+					GetRand(3) + 1 +Time / 15, 180, 1);
+			}
+			break;
+
+		case 2:
+			if (moveinfo[current].attack == 1) {
+				AttackTime = 90;
+				if (Time % AttackTime == 1) angle = GetRand(360 - 1);
+				if (Time % AttackTime >= 40) {
+					if (Time % AttackTime == 40) {
+						BigShot(GetLocation(), 2, angle, true, true, true, true, 0);
+						BigShot(GetLocation(), 2, angle + 60, true, true, true, true, 0);
+						BigShot(GetLocation(), 2, angle + 120, true, true, true, true, 0);
+						BigShot(GetLocation(), 2, angle + 180, true, true, true, true, 0);
+						BigShot(GetLocation(), 2, angle - 60, true, true, true, true, 0);
+						BigShot(GetLocation(), 2, angle - 120, true, true, true, true, 0);
+					}
+					else if ((Time % AttackTime) % 10 == 0) {
+						CirclerefShot(GetLocation(), 6, 2, angle, true, true, true, true, 0);
+					}
 				}
 			}
 			break;
@@ -190,7 +212,10 @@ void Enemy::Draw() {	//描画
 	DrawBox(X - size, Y - Rad - 10,
 			(X - size) + size * 2 * ((float)hp / maxhp), Y - Rad - 15, 0x00ff00, TRUE);
 
-	DrawCircle(X, Y, Rad, 0x00ff00);	//敵本体
+	//DrawCircle(X, Y, Rad, 0x00ff00);	//敵本体
+	if (Old.X < X)		DrawRotaGraph(X, Y, 1, 0, image[1], true, true, false);
+	else if (X < Old.X) DrawRotaGraph(X, Y, 1, 0, image[1], true, false, false);
+	else				DrawRotaGraph(X, Y, 1, 0, image[0], true, false, false);
 
 	for (int i = 0; i < BltLimit; i++) {	//弾
 		if (bullets[i] == nullptr) { break; }
@@ -225,6 +250,15 @@ void Enemy::Hit() {}
 
 bool Enemy::Checkhp() { 
 	bool let = (hp <= 0);
+
+	if (let && phase < 2) {
+		phase++;
+		hp = maxhp;
+		inputCSV();
+		waittime = 999;
+		current = 0;
+		return false;
+	}
 	return let;
 }
 
@@ -250,7 +284,7 @@ void Enemy::GetPlayerStat(Player* player) {		//プレイヤーの座標を取得
 	PlayerY = player->GetLocation().Y;
 }
 
-void Enemy::SircleShot(Location loc, int way, float spd, float ang, int col) {		//円形ショット(way数、弾速、角度、色)
+void Enemy::CircleShot(Location loc, int way, float spd, float ang, int col) {		//円形ショット(way数、弾速、角度、色)
 	int shot = 0;	//弾を発射した数
 
 	for (int bulletcount = 0; bulletcount < BltLimit && shot < way; bulletcount++) {
@@ -323,7 +357,35 @@ void Enemy::Move() {
 	
 }
 
-void Enemy::SirclerefShot(Location loc, int way, int spd, float ang, bool up, bool right, bool down, bool left, int col) {		//円形ショット(way数、弾速、角度、各方向の壁で反射するか(それぞれ上、右、下、左方向)、色)
+void Enemy::CreateShot(Location loc, float spd, float angle, int col)
+{
+	for (int bulletcount = 0; bulletcount < BltLimit; bulletcount++) {
+
+		if (bullets[bulletcount] == nullptr && bulletcount < BltLimit) {
+
+			bullets[bulletcount] = new straightBlt(loc, spd, angle, col, bullet_A);	//弾を発射する
+			break;
+		}
+
+	}
+}
+
+void Enemy::BigShot(Location loc, int spd, float ang, bool up, bool right, bool down, bool left, int col) {		//円形ショット(way数、弾速、角度、各方向の壁で反射するか(それぞれ上、右、下、左方向)、色)
+	int shot = 0;	//弾を発射した数
+
+	for (int bulletcount = 0; bulletcount < BltLimit; bulletcount++) {
+
+		if (bullets[bulletcount] == nullptr && bulletcount < BltLimit) {
+
+			bullets[bulletcount] = new bigBlt(loc, spd, ang, 1, up, right, down, left, col, bullet_D);	//弾を発射する
+			break;
+		}
+
+	}
+
+}
+
+void Enemy::CirclerefShot(Location loc, int way, int spd, float ang, bool up, bool right, bool down, bool left, int col) {		//円形ショット(way数、弾速、角度、各方向の壁で反射するか(それぞれ上、右、下、左方向)、色)
 	int shot = 0;	//弾を発射した数
 
 	for (int bulletcount = 0; bulletcount < BltLimit && shot < way; bulletcount++) {
@@ -370,7 +432,7 @@ void Enemy::StopShot(Location loc, int Stspd, float Stang, int stop, int time, i
 }
 
 //一度止まる円形ショット(弾速、way数、色、初めの速度、止まるまでの時間、待機時間、次の速度、次の弾速、Reangをway数に応じて変化させるか)
-void Enemy::SircleStopShot(Location loc, int way, int Stspd, float Stang, int stop, int time, int Reang, int Respd, bool ChangeReang, int col) {
+void Enemy::CircleStopShot(Location loc, int way, int Stspd, float Stang, int stop, int time, int Reang, int Respd, bool ChangeReang, int col) {
 	int shot = 0;	//弾を発射した数
 
 	for (int bulletcount = 0; bulletcount < BltLimit && shot < way; bulletcount++) {

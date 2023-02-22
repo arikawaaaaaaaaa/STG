@@ -3,6 +3,14 @@
 
 constexpr auto PI = 3.1415926f;
 
+struct RefWall
+{
+	bool UP;
+	bool RIGHT;
+	bool DOWN;
+	bool LEFT;
+};
+
 class BulletsBase : public SphereColider
 {
 protected:
