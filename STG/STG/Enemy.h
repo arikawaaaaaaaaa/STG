@@ -16,14 +16,18 @@ int  attack;	//UŒ‚‚Ìí—Ş
 class Enemy : public CharaBase, public SphereColider
 {
 private:
+
+	//‘Ì—ÍŠÖ˜A
+	int hparray[6] = { 100,100,100,100,30,50 };
 	int hp;
 	int maxhp;
+
 	int point;
 
 	int Stage;
 
 	//‰æ‘œ
-	int image[2];
+	int image[4];
 
 	int shotnum;
 

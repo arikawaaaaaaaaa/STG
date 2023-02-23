@@ -35,6 +35,27 @@ void Enemy::inputCSV() {
 		}
 		break;
 
+	case 2:
+		switch (phase)
+		{
+		case 0:
+			error = fopen_s(&fp, "data/moveinfo_d.csv", "r");
+			break;
+
+		case 1:
+			error = fopen_s(&fp, "data/moveinfo_e.csv", "r");
+			break;
+
+		case 2:
+			error = fopen_s(&fp, "data/moveinfo_f.csv", "r");
+			break;
+
+		default:
+			error = fopen_s(&fp, "data/moveinfo.csv", "r");
+			break;
+		}
+		break;
+
 	default:
 		error = fopen_s(&fp, "data/moveinfo.csv", "r");
 		break;
@@ -68,7 +89,7 @@ void Enemy::inputCSV() {
 Enemy::Enemy(Location loc, float rad, int stage) : SphereColider(loc, rad) {
 
 	point = 10;
-	hp = 100;
+	hp = hparray[(stage - 1) * 3];
 	maxhp = hp;
 
 	Stage = stage;
@@ -83,7 +104,7 @@ Enemy::Enemy(Location loc, float rad, int stage) : SphereColider(loc, rad) {
 	Time = 0;
 	angle = 0;
 
-	LoadDivGraph("images/enemy_a.png", 2, 2, 1, 64, 64, image);
+	LoadDivGraph("images/enemy_a.png", 4, 4, 1, 64, 64, image);
 
 	LoadDivGraph("images/bullet_a.png", 8, 8, 1, 16, 16, bullet_A);
 	LoadDivGraph("images/bullet_b.png", 8, 8, 1, 16, 16, bullet_B);
@@ -110,14 +131,16 @@ Enemy::Enemy(Location loc, float rad, int stage) : SphereColider(loc, rad) {
 
 void Enemy::Update() {
 
+	//ëOÉtÉåÅ[ÉÄÇÃç¿ïWÇãLò^
 	Old = GetLocation();
 
+	//à⁄ìÆ
 	switch (moveinfo[current].pattern) {
-	case 0:
+	case 0:		//à⁄ìÆ
 		Move();
 		break;
 
-	case 1:
+	case 1:		//ë“ã@
 		waittime++;
 
 		if (moveinfo[current].Waittime <= waittime) {
@@ -130,59 +153,133 @@ void Enemy::Update() {
 
 	int AttackTime = 0;	//çUåÇä‘äu
 	if (moveinfo[current].attack != 0) {
-		switch (phase)
+
+		//ìGÇÃéÌóﬁÇ…ÇÊÇ¡ÇƒçUåÇÇïœÇ¶ÇÈ
+		switch (Stage)
 		{
-		case 0:
-			if (moveinfo[current].attack == 1) {
-				AttackTime = 20;
-				angle = Time;
-				if (Time % AttackTime == 0) {
-					CircleShot(GetLocation(), 12, 3, angle - (Time / AttackTime), 2);
-
-				}
-			}
-
-
-			if (moveinfo[current].attack == 2) {
-				AttackTime = 20;
-				angle = Time;
-				if (Time % AttackTime == 0) {
-
-					//CircleStopShot(GetLocation(), 80, 5, angle, 30, 30, angle+180, 2, true);
-					CircleShot(GetLocation(), 12, 3, -angle - (Time / AttackTime), 2);
-
-				}
-			}
-			break;
-
 		case 1:
-			if (moveinfo[current].attack == 1) {
-				int Xloc = 100;
-				CreateShot({ GetLocation().X + GetRand(Xloc * 2) - Xloc,GetLocation().Y + GetRand(Xloc * 2) - Xloc },
-					GetRand(3) + 1 +Time / 15, 0, 1);
-				CreateShot({ GetLocation().X + GetRand(Xloc * 2) - Xloc,GetLocation().Y + GetRand(Xloc * 2) - Xloc },
-					GetRand(3) + 1 +Time / 15, 180, 1);
+			switch (phase)
+			{
+			case 0://1íiäK
+				if (moveinfo[current].attack == 1) {
+					AttackTime = 20;
+					angle = Time;
+					if (Time % AttackTime == 0) {
+						//12ï˚å¸Ç…çUåÇ
+						CircleShot(GetLocation(), 12, 3, angle - (Time / AttackTime), 2);
+					}
+				}
+
+
+				if (moveinfo[current].attack == 2) {
+					AttackTime = 20;
+					angle = Time;
+					if (Time % AttackTime == 0) {
+						//12ï˚å¸Ç…çUåÇ
+						CircleShot(GetLocation(), 12, 3, -angle - (Time / AttackTime), 2);
+					}
+				}
+				break;
+
+			case 1://2íiäK
+					//è„ï˚å¸Ç∆â∫ï˚å¸Ç…ñ≥êîÇÃíe
+				if (moveinfo[current].attack == 1) {
+					int Xloc = 100;
+					CreateShot({ GetLocation().X + GetRand(Xloc * 2) - Xloc,GetLocation().Y + GetRand(Xloc * 2) - Xloc },
+						GetRand(3) + 1 + Time / 15, 0, 1);
+					CreateShot({ GetLocation().X + GetRand(Xloc * 2) - Xloc,GetLocation().Y + GetRand(Xloc * 2) - Xloc },
+						GetRand(3) + 1 + Time / 15, 180, 1);
+				}
+				break;
+
+			case 2://3íiäK
+				//îΩéÀÇ∑ÇÈëÂíeÇ∆éDíe
+				if (moveinfo[current].attack == 1) {
+					AttackTime = 90;
+					if (Time % AttackTime == 1) angle = GetRand(360 - 1);
+					if (Time % AttackTime >= 40) {
+						if (Time % AttackTime == 40) {
+							BigShot(GetLocation(), 2, angle, true, true, true, true, 0);
+							BigShot(GetLocation(), 2, angle + 60, true, true, true, true, 0);
+							BigShot(GetLocation(), 2, angle + 120, true, true, true, true, 0);
+							BigShot(GetLocation(), 2, angle + 180, true, true, true, true, 0);
+							BigShot(GetLocation(), 2, angle - 60, true, true, true, true, 0);
+							BigShot(GetLocation(), 2, angle - 120, true, true, true, true, 0);
+						}
+						else if ((Time % AttackTime) % 10 == 0) {
+							CirclerefShot(GetLocation(), 6, 2, angle, true, true, true, true, 0);
+						}
+					}
+				}
+				break;
 			}
 			break;
 
 		case 2:
-			if (moveinfo[current].attack == 1) {
-				AttackTime = 90;
-				if (Time % AttackTime == 1) angle = GetRand(360 - 1);
-				if (Time % AttackTime >= 40) {
-					if (Time % AttackTime == 40) {
-						BigShot(GetLocation(), 2, angle, true, true, true, true, 0);
-						BigShot(GetLocation(), 2, angle + 60, true, true, true, true, 0);
-						BigShot(GetLocation(), 2, angle + 120, true, true, true, true, 0);
-						BigShot(GetLocation(), 2, angle + 180, true, true, true, true, 0);
-						BigShot(GetLocation(), 2, angle - 60, true, true, true, true, 0);
-						BigShot(GetLocation(), 2, angle - 120, true, true, true, true, 0);
-					}
-					else if ((Time % AttackTime) % 10 == 0) {
-						CirclerefShot(GetLocation(), 6, 2, angle, true, true, true, true, 0);
+			switch (phase)
+			{
+			case 0://1íiäK
+				//ñ≥êîÇÃíeÇÇŒÇÁÇ‹Ç≠
+				if (moveinfo[current].attack == 1) {
+					AttackTime = 1;
+					angle = Time;
+					if (Time % AttackTime == 0) {
+						CreateShot(GetLocation(), GetRand(3) + 1, GetRand(360 - 1), GetRand(7));
 					}
 				}
+				break;
+
+			case 1://2íiäK
+				//8ï˚å¸Ç…ëÂíe
+				if (moveinfo[current].attack == 1) {
+					if (Time == 0) {
+						angle = GetRand(360 - 1);
+						BigShot(GetLocation(), 2, angle, false, false, false, false, 0);
+						BigShot(GetLocation(), 2, angle + 45, false, false, false, false, 0);
+						BigShot(GetLocation(), 2, angle + 90, false, false, false, false, 0);
+						BigShot(GetLocation(), 2, angle + 135, false, false, false, false, 0);
+						BigShot(GetLocation(), 2, angle + 180, false, false, false, false, 0);
+						BigShot(GetLocation(), 2, angle - 45, false, false, false, false, 0);
+						BigShot(GetLocation(), 2, angle - 90, false, false, false, false, 0);
+						BigShot(GetLocation(), 2, angle - 135, false, false, false, false, 0);
+					}
+				}
+
+				//é©ã@ë_Ç¢ÇÃ3wayíe
+				if (moveinfo[current].attack == 2) {
+					HomingShot(GetLocation(), 8, 0, 4);
+					HomingShot(GetLocation(), 7, -10, 4);
+					HomingShot(GetLocation(), 7, 10, 4);
+				}
+				break;
+
+			case 2://3íiäK
+				if (moveinfo[current].attack == 1) {
+					//8ï˚å¸Ç…íeÇï˙Çøë±ÇØÇÈ
+					if (Time % 2)CircleShot(GetLocation(), 8, 5, Time / 4, 0);
+
+					//10ï˚å¸Ç…ëÂíeÇï˙Ç¬
+					if (Time % 60 == 0) {
+						angle = GetRand(360 - 1);
+						BigShot(GetLocation(), 2, angle, false, false, false, false, 0);
+						BigShot(GetLocation(), 2, angle + 36, false, false, false, false, 0);
+						BigShot(GetLocation(), 2, angle + 72, false, false, false, false, 0);
+						BigShot(GetLocation(), 2, angle + 108, false, false, false, false, 0);
+						BigShot(GetLocation(), 2, angle + 144, false, false, false, false, 0);
+						BigShot(GetLocation(), 2, angle + 180, false, false, false, false, 0);
+						BigShot(GetLocation(), 2, angle - 36, false, false, false, false, 0);
+						BigShot(GetLocation(), 2, angle - 72, false, false, false, false, 0);
+						BigShot(GetLocation(), 2, angle - 108, false, false, false, false, 0);
+						BigShot(GetLocation(), 2, angle - 144, false, false, false, false, 0);
+						hp -= 1;
+					}
+				}
+
+				break;
 			}
+			break;
+
+		default:
 			break;
 		}
 	}
@@ -213,7 +310,6 @@ void Enemy::Draw() {	//ï`âÊ
 	float size = 30;
 
 	//ëÃóÕÉoÅ[
-
 	//ê‘Ç¢Ç∆Ç±
 	DrawBox(X - size, Y - Rad - 10,
 			X + size, Y - Rad - 15, 0xff0000, TRUE);
@@ -222,10 +318,11 @@ void Enemy::Draw() {	//ï`âÊ
 	DrawBox(X - size, Y - Rad - 10,
 			(X - size) + size * 2 * ((float)hp / maxhp), Y - Rad - 15, 0x00ff00, TRUE);
 
-	//DrawCircle(X, Y, Rad, 0x00ff00);	//ìGñ{ëÃ
-	if (Old.X < X)		DrawRotaGraph(X, Y, 1, 0, image[1], true, true, false);
-	else if (X < Old.X) DrawRotaGraph(X, Y, 1, 0, image[1], true, false, false);
-	else				DrawRotaGraph(X, Y, 1, 0, image[0], true, false, false);
+	//ìGñ{ëÃ
+	int ind = (Stage - 1) * 2;
+	if (Old.X < X)		DrawRotaGraph(X, Y, 1, 0, image[ind + 1], true, true, false);
+	else if (X < Old.X) DrawRotaGraph(X, Y, 1, 0, image[ind + 1], true, false, false);
+	else				DrawRotaGraph(X, Y, 1, 0, image[ind], true, false, false);
 
 	for (int i = 0; i < BltLimit; i++) {	//íe
 		if (bullets[i] == nullptr) { break; }
@@ -261,11 +358,14 @@ void Enemy::Hit() {}
 bool Enemy::Checkhp() { 
 	bool let = (hp <= 0);
 
+	//êiçsÇ™àÍíËà»â∫Ç»ÇÁêiçsìxÇëùÇ‚Ç∑
 	if (let && phase < 2) {
 		phase++;
+		maxhp = hparray[(Stage - 1) * 3 + phase];	//ëÃóÕÉäÉZÉbÉg
 		hp = maxhp;
-		inputCSV();
-		waittime = 999;
+		inputCSV();		//çUåÇÉpÉ^Å[ÉìÉäÉZÉbÉg
+		waittime = 0;
+		Time = 0;
 		current = 0;
 		return false;
 	}

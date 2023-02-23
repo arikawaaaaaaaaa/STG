@@ -5,21 +5,18 @@
 #include"HPotion.h"
 #include"common.h"
 
-#define DEBUG
-
 Location GetNewLocation(Location NewLoc);
 
 Player::Player(Location loc, float rad) :SphereColider(loc, rad) {
 	Score = 0;
-	Life = 99;
+	Life = 10;
 	MaxLife = Life;
 
+	HitCool = 0;
 	ShotCool = 0;
 
-	LoadDivGraph("images/bullet_c.png", 8, 8, 1, 14, 16, bullet);
-
-	//image初期化
-	//speed初期化
+	image = LoadGraph("images/player.png");
+	LoadDivGraph("images/bullet_b.png", 8, 8, 1, 16, 16, bullet);
 
 	bullets = new BulletsBase*[BltLimit];
 	for (int i = 0; i < BltLimit; i++) {
@@ -57,33 +54,36 @@ void Player::Update() {
 
 	if (KeyMng::OnPress(KEY_INPUT_Z) && ShotCool <= 0) {	//弾を発射する
 		if (bullets[bulletcount] == nullptr && bulletcount < BltLimit) {	//画面上の弾の数は最大値未満？
-			bullets[bulletcount] = new straightBlt(GetLocation(), 7, 0.f, 7, bullet);	//真なら弾を発射する
+			bullets[bulletcount] = new straightBlt({ GetLocation().X,GetLocation().Y-48 }, 7, 0.f, 7, bullet);	//真なら弾を発射する
 			ShotCool = 4;
 		}
 	}
 
 	if (MaxLife * 2 < Life)Life = MaxLife * 2;
+	if (0 < HitCool)HitCool--;
 	if (0 < ShotCool)ShotCool--;
 }
 
 void Player::Draw() {
-	DrawCircle((int)GetLocation().X, (int)GetLocation().Y, (int)GetRadius(), 0xff0000);
+
+	DrawRotaGraph((int)GetLocation().X, (int)GetLocation().Y-16, 1, 0, image, true, false, false);
+	if (KeyMng::OnPress(KEY_INPUT_LSHIFT)) {
+		DrawCircle((int)GetLocation().X, (int)GetLocation().Y, (int)GetRadius(), 0xff0000);
+	}
 
 	for (int i = 0; i < BltLimit; i++) {
 		if (bullets[i] == nullptr) { break; }
 		bullets[i]->Draw();
 	}
-
-#ifdef DEBUG
-
-	DrawFormatString(10, 10, 0xffffff, "Life : %d", this->Life);
-#endif // DEBUG
-
-
 }
 
 void Player::Hit() {
-	if (--Life < 0)Life = 0;
+
+	if (!HitCool) {
+		Life--;
+		HitCool = 30;	//被ダメージと被弾後無敵時間設定
+	}
+	if (Life < 0)Life = 0;
 }
 
 void Player::Hit(int BulletCnt) {
@@ -127,26 +127,37 @@ int Player::GetScore() { return Score; }
 
 Location GetNewLocation(Location NewLoc) {
 	
+	//スピード設定
 	float spd = 3.0;
-	if (KeyMng::OnPress(KEY_INPUT_LSHIFT))spd = 1.5;
 
+	//shiftが押されていると減速
+	if (KeyMng::OnPress(KEY_INPUT_LSHIFT))spd = 1;
+
+	//右移動
 	if (KeyMng::OnPress(KEY_INPUT_RIGHT)) {
 		NewLoc.X += spd;
 		//if (KeyMng::OnPress(KEY_INPUT_UP) || KeyMng::OnPress(KEY_INPUT_DOWN)) NewLoc.X -= 1.5f;
 	}
+
+	//左移動
 	if (KeyMng::OnPress(KEY_INPUT_LEFT)) {
 		NewLoc.X -= spd;
 		//if (KeyMng::OnPress(KEY_INPUT_UP) || KeyMng::OnPress(KEY_INPUT_DOWN)) NewLoc.X += 1.5f;
 	}
+
+	//上移動
 	if (KeyMng::OnPress(KEY_INPUT_UP)) {
 		NewLoc.Y -= spd;
 		//if (KeyMng::OnPress(KEY_INPUT_LEFT) || KeyMng::OnPress(KEY_INPUT_RIGHT)) NewLoc.Y += 1.5f;
 	}
+
+	//下移動
 	if (KeyMng::OnPress(KEY_INPUT_DOWN)) {
 		NewLoc.Y += spd;
 		//if (KeyMng::OnPress(KEY_INPUT_LEFT) || KeyMng::OnPress(KEY_INPUT_RIGHT)) NewLoc.Y -= 1.5f;
 	}
 
+	//画面外に出ないようにする
 	if (NewLoc.X < SCREEN_MARGIN)NewLoc.X = SCREEN_MARGIN;
 	if (NewLoc.Y < 0)NewLoc.Y = 0.0;
 	if (NewLoc.X > SCREEN_WIDTH - SCREEN_MARGIN)NewLoc.X = SCREEN_WIDTH - SCREEN_MARGIN;
