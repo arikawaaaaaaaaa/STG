@@ -66,11 +66,15 @@ void Player::Update() {
 
 void Player::Draw() {
 
+	//プレイヤー画像
 	DrawRotaGraph((int)GetLocation().X, (int)GetLocation().Y-16, 1, 0, image, true, false, false);
+
+	//shift押してるなら当たり判定を表示
 	if (KeyMng::OnPress(KEY_INPUT_LSHIFT)) {
 		DrawCircle((int)GetLocation().X, (int)GetLocation().Y, (int)GetRadius(), 0xff0000);
 	}
 
+	//弾表示
 	for (int i = 0; i < BltLimit; i++) {
 		if (bullets[i] == nullptr) { break; }
 		bullets[i]->Draw();
